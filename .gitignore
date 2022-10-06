@@ -1,0 +1,18 @@
+## IDE folders
+.vscode
+.idea
+
+## ignored files
+*.txt
+*.log
+*.zip
+*.tar
+*.tar.gz
+*.rar
+*.ear
+*.nar
+*.war
+
+## ignored folders
+test/
+target/
