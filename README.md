@@ -42,23 +42,24 @@ TL: Tomáš Foltýnek = every 2 weeks, starting at 23.09.2022
 ------------------------------------------------------------------------------
 ##### Framework selection
 There are many PhP frameworks free to use, however only one is needed. For that\
-I needed to reduce the possible selection. Criteria were the following:\
-- lightweight (it's only for one page afterall)\
-- MVC (easy to work with)\
-- easy to learn + has good documentation\
-- built-in security features\
-- capable of providing admin access page (for file management)\
-- capable of easier database operations\
+I needed to reduce the possible selection. Criteria were the following:
+- lightweight (it's only for one page afterall)
+- MVC (easy to work with)
+- easy to learn + has good documentation
+- built-in security features
+- capable of providing admin access page (for file management)
+- capable of easier database operations
 - PHP 8+ support
-- under active development/support\
+- under active development/support
+
 Under such rules I've taken a look at the current PhP framework popularity list\
-from several sources and inspected the top few frameworks for meeting the criteria:\
-- Laravel\
-- Symfony\
-- CodeIgniter\
-- FuelPhP\
-- Slim\
-- CakePhP\
+from several sources and inspected the top few frameworks for meeting the criteria:
+- Laravel
+- Symfony
+- CodeIgniter
+- FuelPhP
+- Slim
+- CakePhP
 - Phalcon
 
 ##### Configuration of CI4
