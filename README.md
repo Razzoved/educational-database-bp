@@ -88,6 +88,20 @@ LoadModule rewrite_module modules/mod_rewrite.so
 </Directory>
 ```
 
+3) edit the root directory:
+```
+DocumentRoot "C:/Programs/xampp/htdocs/materials/public"
+<Directory "C:/Programs/xampp/htdocs/materials/public">
+```
+
+For direct configuration of the framework, the env file had to be renamed to\
+.env and following modifications made:
+```
+CI_ENVIRONMENT = development
+
+app.baseURL = 'http://localhost/'
+```
+
 ##### MVC
 
 ##### Functional requirement (connected to project goals)
