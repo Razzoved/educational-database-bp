@@ -1,6 +1,7 @@
 ## IDE folders
 .vscode
 .idea
+.obsidian
 
 ## ignored files
 *.txt
