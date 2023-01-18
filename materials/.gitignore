@@ -97,6 +97,7 @@ _modules/*
 
 # Jetbrains editors (PHPStorm, etc)
 .idea/
+.fleet/
 *.iml
 
 # Netbeans
