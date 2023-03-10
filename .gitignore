@@ -13,6 +13,7 @@
 *.ear
 *.nar
 *.war
+adminer*
 
 ## ignored folders
 test/
