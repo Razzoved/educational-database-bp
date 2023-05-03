@@ -1,0 +1,350 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% I, the copyright holder of this work, release this work into the
+%% public domain. This applies worldwide. In some countries this may
+%% not be legally possible; if so: I grant anyone the right to use
+%% this work for any purpose, without any conditions, unless such
+%% conditions are required by law.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[
+  digital,     %% The `digital` option enables the default options for the
+               %% digital version of a document. Replace with `printed`
+               %% to enable the default options for the printed version
+               %% of a document.
+%%  color,       %% Uncomment these lines (by removing the %% at the
+%%               %% beginning) to use color in the printed version of your
+%%               %% document
+  oneside,     %% The `oneside` option enables one-sided typesetting,
+               %% which is preferred if you are only going to submit a
+               %% digital version of your thesis. Replace with `twoside`
+               %% for double-sided typesetting if you are planning to
+               %% also print your thesis. For double-sided typesetting,
+               %% use at least 120 g/m² paper to prevent show-through.
+  nosansbold,  %% The `nosansbold` option prevents the use of the
+               %% sans-serif type face for bold text. Replace with
+               %% `sansbold` to use sans-serif type face for bold text.
+  colorbold, %% The `nocolorbold` option disables the usage of the
+               %% blue color for bold text, instead using black. Replace
+               %% with `colorbold` to use blue for bold text.
+  lof,         %% The `lof` option prints the List of Figures. Replace
+               %% with `nolof` to hide the List of Figures.
+  lot,         %% The `lot` option prints the List of Tables. Replace
+               %% with `nolot` to hide the List of Tables.
+]{fithesis4}
+%% The following section sets up the locales used in the thesis.
+\usepackage[resetfonts]{cmap} %% We need to load the T2A font encoding
+\usepackage[T1,T2A]{fontenc}  %% to use the Cyrillic fonts with Russian texts.
+\usepackage[
+  main=english, %% By using `czech` or `slovak` as the main locale
+                %% instead of `english`, you can typeset the thesis
+                %% in either Czech or Slovak, respectively.
+  english, german, russian, czech, slovak %% The additional keys allow
+]{babel}        %% foreign texts to be typeset as follows:
+%%
+%%   \begin{otherlanguage}{german}  ... \end{otherlanguage}
+%%   \begin{otherlanguage}{russian} ... \end{otherlanguage}
+%%   \begin{otherlanguage}{czech}   ... \end{otherlanguage}
+%%   \begin{otherlanguage}{slovak}  ... \end{otherlanguage}
+%%
+%% For non-Latin scripts, it may be necessary to load additional
+%% fonts:
+\usepackage{paratype}
+\def\textrussian#1{{\usefont{T2A}{PTSerif-TLF}{m}{rm}#1}}
+%%
+%% The following section sets up the metadata of the thesis.
+\thesissetup{
+    date        = 2023/03/08,
+    university  = mu,
+    faculty     = fi,
+    type        = bc,
+    department  = Department of Computer Science,
+    author      = Jan Martinek,
+    gender      = m,
+    advisor     = {Mgr. Tomáš Foltýnek, Ph.D.},
+    title       = {Interactive database of educational materials on academic integrity},
+    TeXtitle    = {INTERACTIVE DATABASE OF EDUCATIONAL MATERIALS ON ACADEMIC INTEGRITY},
+    keywords    = {PHP, CodeIgniter, MVC, database, JavaScript, material, academic integrity},
+    TeXkeywords = {PHP, CodeIgniter, MVC, database, JavaScript, material, academic integrity},
+    abstract    = {%
+        The thesis aims to reimplement an existing WordPress plugin created by
+        Leoš Lang into a new web application. The resulting application uses
+        a PHP backend supported by the CodeIgniter4 framework. The new application
+        is customized directly for ENAI (European Network for Academic Integrity)
+        in both design and functionality. It mostly matches the original
+        functionality, modified by including changes requested by the ENAI
+        members. Its primary focus is on improving the administration interface,
+        file handling, and filtering. The application is made available on the
+        ENAI (European Network for Academic Integrity) website.
+    },
+    thanks      = {%
+        I want to give my thanks mainly to my supervisor, Mgr. Tomáš Foltýnek, Ph.D.,
+        for leading me through the topic and making time for regular consultations.
+        I'd also like to thank my advisor, Ing. Dita Henek Dlabolová, Ph.D. and all the
+        personnel at ENAI for discussing the requirements with me and for giving me valuable
+        feedback. Finally, I am grateful to my family, who have kept my morale up
+        during my studies.
+    },
+    bib         = sources.bib,
+    %% Remove the following line to use the JVS 2018 faculty logo.
+    facultyLogo = fithesis-fi,
+}
+\usepackage{makeidx}      %% The `makeidx` package contains
+\makeindex                %% helper commands for index typesetting.
+%% These additional packages are used within the document:
+\usepackage{paralist} %% Compact list environments
+\usepackage{amsmath}  %% Mathematics
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{url}      %% Hyperlinks
+\usepackage{markdown} %% Lightweight markup
+\usepackage{listings} %% Source code highlighting
+\lstset{
+  basicstyle      = \ttfamily,
+  identifierstyle = \color{black},
+  keywordstyle    = \color{blue},
+  keywordstyle    = {[2]\color{cyan}},
+  keywordstyle    = {[3]\color{olive}},
+  stringstyle     = \color{teal},
+  commentstyle    = \itshape\color{magenta},
+  breaklines      = true,
+}
+\usepackage{floatrow} %% Putting captions above tables
+\floatsetup[table]{capposition=top}
+\usepackage[babel]{csquotes} %% Context-sensitive quotation marks
+\begin{document}
+%% The \chapter* command can be used to produce unnumbered chapters:
+%% Unlike \chapter, \chapter* does not update the headings and does not
+%% enter the chapter to the table of contents. If we want correct
+%% headings and a table of contents entry, we must add them manually:
+% \markright{\textsc{Introduction}}
+% \addcontentsline{toc}{chapter}{Introduction}
+
+\chapter{Introduction}
+
+Previously, it was almost impossible for people to share information globally.
+However, this has changed drastically in recent decades with the rise of the
+Internet. Each and every year, the number of people using it grows. Over
+63\,\% of people worldwide can utilize it to convey or acquire new information.
+With the increased usage also comes an increase in available resources. While
+this is great for variety, it also sometimes creates an obstacle for anyone
+searching for valuable learning materials. It can be hard to find to filter
+helpful from poorly written or incorrect.
+
+European Network for Academic Integrity (ENAI) is an organization comprising
+higher education institutions that strives to support its members and the public
+in the field of academic integrity. An interactive database of educational
+materials has been made available on the ENAI to combat the issue and has seen
+considerable success since its conception.
+
+The thesis bases itself on the previous iteration of this database application,
+originally created as a more general plugin for WordPress. The plugin offered
+a system supporting the management of educational materials to anyone employing
+WordPress. While still widely used, the ENAI personnel wanted to move from
+WordPress to a more customized solution. Such a decision demands the
+reimplementation of the plugin. The rework is also used to introduce new
+features, refine the existing ones, and tailor the application specifically to
+the needs of ENAI members.
+
+The application uses PHP as its \mbox{server-side} language, supported by a CodeIgniter4
+framework. Frameworks provide many benefits, such as speeding up development by
+providing many \mbox{often-used} functions or enhancing security and maintainability.
+The project is designed to be a standalone web application, a small content
+management system. It must be as portable as possible, with only a few steps
+needed to run on most servers that support PHP. The user side of the application,
+or front end, uses HTML, CSS, and pure JavaScript under the ECS6 standard.
+
+The application can be divided into two almost separate areas, one accessible to
+anyone and the second restricted behind an authentication system.
+
+The public features a view of single or all materials. It allows users to
+download attached files and view related subjects and websites. The searching
+supports suggestions and, along with filtering, should be easy to grasp and
+control.
+
+The second one is an administration area. It allows easy and intuitive management
+of materials. The management contains the creation, updating, and deletion of
+taxonomies, accounts, and files. A dashboard is included to allow viewing of
+statistics of use.
+
+\section{Thesis structure}
+
+The second chapter takes a look at the overall context. The third chapter
+focuses on the analysis of requirements. The fourth one focuses on design decisions,
+showcasing select diagrams. The fifth chapter focuses on selected implementation
+details and challenges. The sixth chapter evaluates the work and offers
+additional insights and possible future improvements.
+
+\chapter{Prerequisites}
+
+\section{European Network for Academic Integrity}
+
+“The European Network for Academic Integrity (ENAI) is an association gathering
+educational institutions and individuals interested in maintaining and promoting
+academic integrity”~\cite{enai_about}. It aims to support its members and
+the public in the field of academic integrity, being the most extensive academic
+integrity network in Europe. Aside from organizing the European Conference on Ethics
+and Integrity in Academia, ENAI also provides several free services to the public,
+such as a glossary on academic integrity or a database of educational materials.
+
+The mentioned database is one of the key players in supporting its efforts.
+The database runs on a WordPress plugin~\cite{lang18} made by Leoš Lang.
+Its caretakers wish to have it remade into a separate web application. Together
+with this request, they want to change or remove several old features. Those
+conditions are examined later in section~\ref{chap:analysis}.
+
+\section{E-learning}
+
+The first appearance of \mbox{e-learning} dates to the \mbox{mid-1960s}, but
+the real growth began much later with the growth of the Internet in the late
+90s~\cite{research_e-learning}. Since then, many forms of \mbox{e-learning}
+have come into existence, be it interactive forms like videos or more passive
+ones like \mbox{e-books}.
+
+Most of the forms can be described by the following definition:  “E-learning is the use
+of electronic technologies to create learning experiences”~\parencite[page.~1]{horton11}.
+Learning is experienced with the usage of learning objects. “A learning object is a chunk
+of electronic content that can be accessed individually and that ultimately accomplishes
+a single learning objective and can prove it”~\parencite[page.~47]{horton11}. At its core,
+an interactive database is an application of the previously mentioned definition.
+Each material in the database then represents a singular learning object.
+
+\section{Content management systems}
+
+“A content management system (CMS) is primarily a repository for multimedia content
+objects”~\parencite[page.~17]{mauthe04}. According to this definition, three main
+areas every CMS should provide can be identified:
+
+\begin{itemize}
+    \item collection - acquiring information into the system, be it from existing
+    or newly created sources.
+    \item management - modifying or removing information that has already been
+    collected and saved into the system.
+    \item publishing - making the content available to the users through the web,
+    e-mail, or any other means, such as printed copies.
+\end{itemize}
+
+For this thesis, it is important to mention two concrete kinds of CMS. First, an aim
+of the thesis. A system that handles educational materials directly and simplifies
+the collection and management operations for the user. The other one is more advanced
+but serves a different purpose. It allows any user to create and manage websites
+without prior programming knowledge. One of these is WordPress, mentioned in
+section~\ref{sect:wordpress}.
+
+\section{PHP}
+
+Hypertext PreProcessor (PHP) is the currently most used \mbox{server-side} scripting
+language. Being an \mbox{open-source} project able to run on most operating systems
+ensures portability to almost any server. Its main advantages are platform and database
+independency or easy understandability with \mbox{C-like} syntax. It offers many
+library functions by default, such as array or hashing helpers, easing the burden
+on developers. PHP code can be embedded into HTML files. The server reads and
+alters the contents based on the embedded code before sending the page to the
+user~\parencite[page.~30]{welling17}. PHP is very fast and scalable. It can also
+service virtually any content, whether in the form of small project or
+a \mbox{large-scale} website like Facebook. The updates to PHP are mostly backward
+compatible, so little or no changes are usually required.
+
+\section{WordPress}
+\label{sect:wordpress}
+
+\subsection{About}
+
+WordPress is the most popular content management system. It is an \mbox{open-source}
+platform running on PHP that allows anyone to contribute to its improvement.
+Due to the rapid development and wide range of downloadable plugins and themes,
+WordPress maintains a high following. It is used by 63.3\,\% of all websites whose
+content management system is known, or 43.2\,\% in total~\cite{w3_wordpress}.
+
+However, even if WordPress has many templates, many pages may look identical.
+The identical look is also true for the administration user interface, which is
+not entirely wrong, but occasionally can be too constrained or complex for
+specific tasks.
+
+\subsection{Plugins}
+
+The core of WordPress is designed to be more lightweight and flexible. A WordPress
+plugin is a collection of PHP scripts that can be accompanied by custom stylesheets
+and templates. Their purpose is to extend the core with additional functionalities.
+They can make changes to the database, show content to users, integrate into
+administration, automate tasks (such as comment filtering), or function as
+a separate application.
+
+\section{Existing solutions}
+
+The work is to replace the existing WordPress plugin with a custom PHP solution.
+In order to do so, several steps were taken. First, the plugin was examined
+for the possibility of utilizing its source code, be it wholly or in parts, inside
+the new application. It has been deemed to be too profoundly interconnected with
+WordPress and therefore discarded. Instead, a requirements and design analysis
+process was executed and specified in section~\ref{sect:plugin}.
+
+Further research was conducted in the field of available open-source solutions.
+While there is a multitude of PHP web applications that handle database records
+and their presentation, none meet the established criteria for the handling of
+educational materials.
+
+\chapter{Analysis and Design}
+\label{chap:analysis}
+
+The first part looks at the plugin. The second describes the functional requirements,
+and the third discusses \mbox{non-functional} requirements.
+
+\section{Plugin}
+\label{sect:plugin}
+...
+
+\newpage
+
+==========================
+
+Název anglicky: Interactive database of educational materials on academic integrity
+Vedení:
+
+Mgr. Tomáš Foltýnek, Ph.D., učo 4374 (vedoucí)   
+
+Bc. Dita Dlabolová, učo 172761 (konzultant)   
+
+Student (max. 1):
+
+Jan Martinek, učo 484967, FI B-INF IN [sem 6, roč 3] • Student potvrzuje téma k obhajobě? Ano
+Prerekvizity: NOW(SBAPR)
+
+Garanční pracoviště tématu: Katedra teorie programování
+
+Oficiální zadání:
+
+European Network for Academic Integrity (ENAI) is a consortium of higher education institutions
+aiming to support their members in the field of academic integrity. One of the key means of
+support is an interactive database of educational materials available from the ENAI website.
+The database has been widely used by students and academics from all around the world.
+
+The main task of the student will be to redesign and reimplement the content management
+system with regard to the feedback collected from the users. Specifically, the CMS should
+not rely on WordPress but become a stand-alone application. The other requirements include:
+
+\begin{itemize}
+    \item make filtering and searching more user-friendly
+    \item implement user-friendly administration of the materials, including a tool to
+    analyse search queries and the use of materials
+    \item refine the system of tags, categories and other metadata
+    \item implement support for materials available in multiple languages
+\end{itemize}
+
+Besides the regular contact with the supervisor, this topic includes also intensive
+communication in English with the ENAI executive manager, who will serve as a thesis
+consultant.
+
+==========================
+
+\printbibliography[heading=bibintoc] %% Print the bibliography.
+
+%     \makeatletter\thesis@blocks@clear\makeatother
+%     \phantomsection %% Print the index and insert it into the
+%     \addcontentsline{toc}{chapter}{\indexname} %% table of contents.
+%     \printindex
+
+% \appendix %% Start the appendices.
+% \chapter{Source Code}
+% SOURCE CODE WILL BE ADDED
+
+\end{document}
