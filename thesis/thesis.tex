@@ -351,12 +351,12 @@ and the third discusses \mbox{non-functional} requirements.
 \section{Plugin}
 \label{sect:plugin}
 
-The original application is a plugin for WordPress. It is an online learning platform that provides a variety of materials and resources on various topics on academic integrity. The analysis ascertains its structure, design, and the possibility of usage as a code base instead of starting from nothing. After the analysis, it was clear that putting the original code to use would prove more difficulties than starting from zero~\ref{subsect:plugin-structure}. The application is still meant to be a replacement, so the existing user interface and data needed to be taken into account while discovering the requirements. To get more detailed information about the plugin, see the thesis written by Leoš Lang~\cite{lang18}.
+The original application is a plugin for WordPress. It is an online learning platform that provides a variety of materials and resources on various topics on academic integrity. The analysis ascertains its structure, design, and the possibility of usage as a code base instead of starting from nothing. After the analysis, it was clear that putting the original code to use would prove more difficult than starting from zero~\ref{subsect:plugin-structure}. The application is still meant to be a replacement, so the existing user interface and data need to be taken into account while discovering the requirements. To get more detailed information about the plugin, see the thesis written by Leoš Lang~\cite{lang18}.
 
 \subsection{Structure}
 \label{subsect:plugin-structure}
 
-At first glance, the structure of the plugin is straightforward. It follows a standard WordPress plugin folder structure.
+The very first step is getting to know the structure of the plugin. At a glance, the plugin seems straightforward. It follows a standard WordPress plugin folder structure.
 
 \begin{itemize}
 	\item \textit{css/} - contains compiled scss files
@@ -368,13 +368,45 @@ At first glance, the structure of the plugin is straightforward. It follows a st
 	\item \textit{uninstall.php} - not implemented
 \end{itemize}
 
-However, from this structure, it can also be seen that it does not leverage the WordPress MVC framework. Instead, it opts for a less graceful setup with custom post types and their related functionalities. The code is not very well documented outside of the mentioned thesis. The whole implementation heavily depends on WordPress and the methods it provides. The lack of proper documentation and high dependency on WordPress makes it hard to separate and reimplement most of the existing code.
+However, this structure also indicates that the plugin does not leverage the WordPress MVC framework. Instead, it opts for a less graceful setup. It uses custom data types and implements their related functionalities by itself. The code is not very well documented outside of the mentioned thesis. The whole implementation heavily depends on WordPress and the methods it provides. The lack of proper documentation and high dependency on WordPress leads to a hard-to-separate and reimplement design. The plugin supports older versions starting with PHP version 5. This blocks newer updates. As such, a decision was made to focus on the frontend and database design choices rather than the plugin's rework with its code as a basis.
+
+\subsection{Types of content}
+
+The plugin works as an e-learning database. As such, it must handle educational materials. The materials hold the following properties:
+
+\begin{itemize}
+	\item Title - the name of the material.
+	\item Sender - the name of the person who sent or created the material.
+	\item Date - of when the material was published.
+	\item Type - indicates the contents of the material.
+	\item Tags - categories and other metadata.
+	\item Comments - provided by users to receive feedback on materials.
+	\item Rating - provided by users to favor quality materials.
+	\item Content - can be a description of provided attachments or a complete learning experience.
+	\item Attachments - link to some website or files on the server.
+\end{itemize}
+
+Sender as an attribute has only ever been used during the materials' creation, never shown otherwise, and can be removed. While shown, the type has never seen much use and should be merged into tags.
+
+Tags are a central part of the application. They are ordered in a one-level hierarchy in a category-to-value relationship. Over the years, many tags accumulated, categories started overflowing, and their refinement is long overdue.
+
+The rating was originally a part of the comment system, where each comment could contain a rating of one through five. Many malicious users took advantage of the comments to spread spam and advertisement messages, and the comments were disabled. The rating should be a separate functionality in the new version, with comments never returning.
+
+The attachments could either be links or files. Files were saved into folders based on the year and month of their upload. This should be changed into a model where every attachment belongs directly to the material as per the administrator's request. More on the limitations of attachments is said in the user interface section~\ref{subsect:plugin-ui}.
 
 \subsection{User interface}
+\label{subsect:plugin-ui}
 
-\subsection{Types of content and database}
+The plugin provides several viewable pages: all or filtered materials, material details, and administration with configuration and a material editor. Its interface is quite plain, which is in no way a bad thing. The plainness makes it look clean and easy to navigate. The plugin offers the same navigation menu as ENAI's main page, which will not be a part of the new version due to separability.
 
-From the analysis of user interface it can be seen that there are three main content types to be found: material, tags, attachments. 
+The view of all materials contains a search bar, a filter menu, and a list of found materials. This list is paged and can be filtered by both the search bar and the filters. Every material shows its title, thumbnail, publish date, rating, short description, and views. A similar view is present in the administration, except the data is shown in a sortable table.
+
+Upon clicking on any material, a user is redirected to its details, where all of the mentioned properties are visible, with full content replacing the description. Either a link or files are appended to the end of those details.
+Be aware that there is a word \textit{either}. Inside management, this click opens the material editor with values of selected material. New material is created similarly, except by clicking a particular button. Tags can be managed by the editor on the right side of the view anywhere in the plugins' administration area.
+
+Where the layout fails is on mobile devices and inside the administration. For example, many buttons appear out of place, and after opening the filters, they can no longer be closed. The main problem with administration is the absence of usage statistics and no way of ordering the materials by those values. Moreover, the attachments are clumsy at best. You can select the material to have a link attached or a collection of files. Never both. While it is possible to add links directly into content, it does not look or feel great. Assigning tags to materials is not easy either since they are shown in a block with no search available.
+
+There are many problems with the user interface, and the rework hopes to address all or at least a major part of them.
 
 \section{Requirements}
 
@@ -469,6 +501,25 @@ The application is deployed with hundreds of objects already defined and saved i
 \section{Public section}
 
 \section{Administration section}
+
+\newpage
+
+------- PROVIZORNI POUZITE NASTROJE
+
+\begin{itemize}
+	\item Windows
+	\item Insomnia
+	\item Visual Studio Code
+	\item Laragon
+	\item HeidiSQL
+	\item Linux
+	\item Postman
+	\item Texmaker
+	\item fithesis4
+	\item Grammarly
+	\item Mozilla Firefox
+	\item Git + Gitlab
+\end{itemize}
 
 \newpage
 
