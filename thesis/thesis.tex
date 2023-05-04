@@ -111,7 +111,6 @@
 \usepackage{floatrow} %% Putting captions above tables
 \floatsetup[table]{capposition=top}
 \usepackage[babel]{csquotes} %% Context-sensitive quotation marks
-\baselineskip
 
 \begin{document}
 %% The \chapter* command can be used to produce unnumbered chapters:
@@ -256,12 +255,12 @@ WordPress is the most popular content management system. It is an \mbox{open-sou
 platform running on PHP that allows anyone to contribute to its improvement.
 Due to the rapid development and wide range of downloadable plugins and themes,
 WordPress maintains a high following. It is used by 63.3\,\% of all websites whose
-content management system is known, or 43.2\,\% in total~\cite{w3_wordpress}.
+content management system is known or 43.2\,\% in total~\cite{w3_wordpress}.
 
-However, even if WordPress has many templates, many pages may look identical.
-The identical look is also true for the administration user interface, which is
-not entirely wrong, but occasionally can be too constrained or complex for
-specific tasks.
+WordPress has a large and active community of users who share knowledge and
+resources related to WordPress development. The use of WordPress plugins
+enabled developers to participate in this community and leverage existing
+WordPress features and knowledge.
 
 \subsection{Plugins}
 
@@ -272,19 +271,65 @@ They can make changes to the database, show content to users, integrate into
 administration, automate tasks (such as comment filtering), or function as
 a separate application.
 
+\subsection{Negatives}
+
+\begin{enumerate}
+	
+	\item \textbf{Security}: Due to its popularity, WordPress is a favorite of hackers
+and malicious users. WordPress websites are often vulnerable to security breaches.
+Using WordPress plugins may introduce additional security risks to the site, as the
+plugins sometimes have vulnerabilities or may not have been adequately maintained.
+	
+	\item \textbf{Performance}: WordPress can be slower and less efficient than a pure
+PHP application because a WordPress site requires extra overhead for running the CMS
+and plugins. The usage of plugins can cause issues and noticeably slow down the site,
+especially if it is implemented poorly.
+	
+	\item \textbf{Flexibility}: While WordPress offers a lot of customization flexibility,
+it can also be limiting in some ways. Using WordPress plugins requires web developers
+to work within the constraints of the WordPress framework, which may restrict the
+ability to use certain features or functionality. This is primarily true in the administration
+user interface, making it harder to simplify specific tasks. Templating also makes causes
+sites to look identical.
+\end{enumerate}
+
 \section{Existing solutions}
 
-The work is to replace the existing WordPress plugin with a custom PHP solution.
-In order to do so, several steps were taken. First, the plugin was examined
-for the possibility of utilizing its source code, be it wholly or in parts, inside
-the new application. It has been deemed to be too profoundly interconnected with
-WordPress and therefore discarded. Instead, a requirements and design analysis
-process was executed and specified in section~\ref{sect:plugin}.
+A search for a freely available and finished solution to the problem was conducted. The search revealed two distinct system design trends, each having a sizeable following. The following text elaborates further on those trends, adds several examples, and mentions why they are not used for the project.
 
-Further research was conducted in the field of available open-source solutions.
-While there is a multitude of PHP web applications that handle database records
-and their presentation, none meet the established criteria for the handling of
-educational materials.
+\subsection{Courses}
+
+The first trend is systems categorized as Learning Management Systems (LMS). Those systems are a kind of CMS, albeit with a more specific focus. This focus is on delivering courses. The terms 'course' and 'educational material' are often used interchangeably, but the two have a number of key differences.
+
+A course is a structured educational experience that is designed to provide learners with a specific set of learning outcomes or objectives. A course typically has a defined start and end date and may be delivered in a variety of formats, such as in-person classes, online modules, or a combination of both. Courses usually have a set curriculum outlining their topics and learning activities. They may include assessments or evaluations to measure the learner's progress and understanding.
+
+Educational material refers to any content or resource designed to support learning and education. Such resources include textbooks, videos, tutorials, articles, and more. Unlike a course, educational material is often self-paced and self-directed, meaning that learners can access and use it on their own schedule and at their own pace.
+
+While both courses and educational material aim to support learning and education, courses are generally more structured and have clear outcomes, and require more preparation work before release. On the other hand, educational materials are more flexible from a creation standpoint. They also allow learners to choose which resources to use to support their learning goals in parts.
+
+Some of the course-focused systems are:
+\begin{itemize}
+
+	\item \textbf{Moodle} [https://moodle.org/] is a very popular platform. It was created in 2002 by Martin Dougiamas, an educator from Australia. Nowadays, it has more than 160000 sites in no less than 240 countries. Moodle provides a wide range of features, including course management, assessments, collaboration tools, and more. It is extensible with plugins.
+
+	\item \textbf{Open edX} [https://openedx.org/] is an open-source platform for delivering massive open online courses created by edX, a non-profit organization founded by Harvard and MIT. One of the key features is its modular architecture, which allows for easy customization and extension. It has a large and active community of developers and users who contribute to the platform's development and support, enhancing its overall functionality.
+
+	\item \textbf{Canvas} [https://github.com/instructure/canvas-lms] is a platform that includes features such as course management, assignments, quizzes, and discussions, as well as integration with other tools such as Google Drive, Zoom, and Microsoft Office. Canvas is written in Ruby programming language. Ruby is unavailable on the current hosting [https://w3techs.com/sites/info/forpsi.com].
+
+\end{itemize}
+
+\subsection{Other}
+
+The other premade solutions are systems similar to WordPress. However, even with a CMS, the application would need to be built from scratch. Moreover, since the work already aims to replace the existing WordPress plugin with a custom PHP solution, using another CMS would defy the purpose. Due to those reasons, this group is ignored too.
+
+Some of the considered open-source instances were:
+\begin{itemize}
+
+	\item \textbf{Omeka} [https://omeka.org/] is specifically designed for creating and managing digital collections and exhibits. It includes features such as customizable themes, metadata management, and access control to create a flexible and organized environment for digital content.
+	
+	\item \textbf{MediaWiki} [https://www.mediawiki.org/wiki/MediaWiki] is used by many organizations to create and manage wikis. It includes features such as page editing, version history, and access control that help create a collaborative and organized environment for content management. While it could be used for the application, there are better choices for material management.
+
+\end{itemize}
 
 \chapter{Analysis and Design}
 \label{chap:analysis}
@@ -294,6 +339,10 @@ and the third discusses \mbox{non-functional} requirements.
 
 \section{Plugin}
 \label{sect:plugin}
+
+\subsection{Interface}
+
+\subsection{Database}
 
 \newpage
 
