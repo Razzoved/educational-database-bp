@@ -246,6 +246,16 @@ service virtually any content, whether in the form of small project or
 a \mbox{large-scale} website like Facebook. The updates to PHP are mostly backward
 compatible, so little or no changes are usually required.
 
+\section{MVC}
+
+The Model-View-Controller (MVC) pattern is a popular design pattern used in web development~\cite{MVC}. Its main idea is to separate the application into three interconnected components: the Model, the View, and the Controller. The MVC pattern's primary benefit is promoting the division of concerns and modularity. By splitting the application into distinct components, each responsible for a specific set of tasks, developers can focus on one component at a time. Changes to that component do not necessarily affect the other components. This makes it easier to maintain and update the application over time.
+
+The Model represents the application's data and business logic, defining how data is stored, manipulated, and retrieved. It provides all methods for interacting with the data and is responsible for maintaining their consistency and integrity.
+
+The View component represents the user interface and may be thought of as a front-end of the application. It is responsible for presenting data to the user in a visually appealing and understandable way and allowing interactions between the user and the application.
+
+The Controller component acts as an intermediary between the Model and the View. It takes the inputs received from the user in the View, optionally verifies or transforms those inputs, then processes them with the help of the Model, and updates the View with the result.
+
 \section{WordPress}
 \label{sect:wordpress}
 
@@ -288,9 +298,10 @@ especially if it is implemented poorly.
 	\item \textbf{Flexibility}: While WordPress offers a lot of customization flexibility,
 it can also be limiting in some ways. Using WordPress plugins requires web developers
 to work within the constraints of the WordPress framework, which may restrict the
-ability to use certain features or functionality. This is primarily true in the administration
-user interface, making it harder to simplify specific tasks. Templating also makes causes
-sites to look identical.
+ability to use certain features or functionality. This is primarily true for the administration
+user interface, making it harder to simplify specific tasks. Templating also causes many
+sites to look similar.
+
 \end{enumerate}
 
 \section{Existing solutions}
@@ -310,11 +321,11 @@ While both courses and educational material aim to support learning and educatio
 Some of the course-focused systems are:
 \begin{itemize}
 
-	\item \textbf{Moodle} [https://moodle.org/] is a very popular platform. It was created in 2002 by Martin Dougiamas, an educator from Australia. Nowadays, it has more than 160000 sites in no less than 240 countries. Moodle provides a wide range of features, including course management, assessments, collaboration tools, and more. It is extensible with plugins.
+	\item \textbf{Moodle}~\cite{https://moodle.org/} is a very popular platform. It was created in 2002 by Martin Dougiamas, an educator from Australia. Nowadays, it has more than 160000 sites in no less than 240 countries. Moodle provides a wide range of features, including course management, assessments, collaboration tools, and more. It is extensible with plugins.
 
-	\item \textbf{Open edX} [https://openedx.org/] is an open-source platform for delivering massive open online courses created by edX, a non-profit organization founded by Harvard and MIT. One of the key features is its modular architecture, which allows for easy customization and extension. It has a large and active community of developers and users who contribute to the platform's development and support, enhancing its overall functionality.
+	\item \textbf{Open edX}~\cite{https://openedx.org/} is an open-source platform for delivering massive open online courses created by edX, a non-profit organization founded by Harvard and MIT. One of the key features is its modular architecture, which allows for easy customization and extension. It has a large and active community of developers and users who contribute to the platform's development and support, enhancing its overall functionality.
 
-	\item \textbf{Canvas} [https://github.com/instructure/canvas-lms] is a platform that includes features such as course management, assignments, quizzes, and discussions, as well as integration with other tools such as Google Drive, Zoom, and Microsoft Office. Canvas is written in Ruby programming language. Ruby is unavailable on the current hosting [https://w3techs.com/sites/info/forpsi.com].
+	\item \textbf{Canvas}~\cite{https://github.com/instructure/canvas-lms} is a platform that includes features such as course management, assignments, quizzes, and discussions, as well as integration with other tools such as Google Drive, Zoom, and Microsoft Office. Canvas is written in Ruby programming language. Ruby is unavailable on the current hosting~\cite{https://w3techs.com/sites/info/forpsi.com}.
 
 \end{itemize}
 
@@ -325,9 +336,9 @@ The other premade solutions are systems similar to WordPress. However, even with
 Some of the considered open-source instances were:
 \begin{itemize}
 
-	\item \textbf{Omeka} [https://omeka.org/] is specifically designed for creating and managing digital collections and exhibits. It includes features such as customizable themes, metadata management, and access control to create a flexible and organized environment for digital content.
+	\item \textbf{Omeka}~\cite{https://omeka.org/} is specifically designed for creating and managing digital collections and exhibits. It includes features such as customizable themes, metadata management, and access control to create a flexible and organized environment for digital content.
 	
-	\item \textbf{MediaWiki} [https://www.mediawiki.org/wiki/MediaWiki] is used by many organizations to create and manage wikis. It includes features such as page editing, version history, and access control that help create a collaborative and organized environment for content management. While it could be used for the application, there are better choices for material management.
+	\item \textbf{MediaWiki}~\cite{https://www.mediawiki.org/wiki/MediaWiki} is used by many organizations to create and manage wikis. It includes features such as page editing, version history, and access control that help create a collaborative and organized environment for content management. While it could be used for the application, there are better choices for material management.
 
 \end{itemize}
 
@@ -340,9 +351,124 @@ and the third discusses \mbox{non-functional} requirements.
 \section{Plugin}
 \label{sect:plugin}
 
-\subsection{Interface}
+The original application is a plugin for WordPress. It is an online learning platform that provides a variety of materials and resources on various topics on academic integrity. The analysis ascertains its structure, design, and the possibility of usage as a code base instead of starting from nothing. After the analysis, it was clear that putting the original code to use would prove more difficulties than starting from zero~\ref{subsect:plugin-structure}. The application is still meant to be a replacement, so the existing user interface and data needed to be taken into account while discovering the requirements. To get more detailed information about the plugin, see the thesis written by Leoš Lang~\cite{lang18}.
 
-\subsection{Database}
+\subsection{Structure}
+\label{subsect:plugin-structure}
+
+At first glance, the structure of the plugin is straightforward. It follows a standard WordPress plugin folder structure.
+
+\begin{itemize}
+	\item \textit{css/} - contains compiled scss files
+	\item \textit{sass/} - contains uncompiled scss files
+	\item \textit{img/} - contains default image assets
+	\item \textit{inc/} - contains all serverside scripts (PHP files)
+	\item \textit{js/} - contains all javascript files
+	\item \textit{e-learning-file-manager.php} - plugin entry point
+	\item \textit{uninstall.php} - not implemented
+\end{itemize}
+
+However, from this structure, it can also be seen that it does not leverage the WordPress MVC framework. Instead, it opts for a less graceful setup with custom post types and their related functionalities. The code is not very well documented outside of the mentioned thesis. The whole implementation heavily depends on WordPress and the methods it provides. The lack of proper documentation and high dependency on WordPress makes it hard to separate and reimplement most of the existing code.
+
+\subsection{User interface}
+
+\subsection{Types of content and database}
+
+From the analysis of user interface it can be seen that there are three main content types to be found: material, tags, attachments. 
+
+\section{Requirements}
+
+\subsection{Functional requirements}
+
+Based off the analysis of the plugin and discussions with the ENAI personel, new functional requirements were stated. Those requirements represent a set of functionalities that the application needs to provide to its users.
+
+\begin{itemize}
+    \item creation and management of materials, resources, tags
+    \item assignment of resources and tags to a material
+    \item viewing and filtering (by title and tags) of all materials
+    \item supporting multiple language materials (references)
+    \item rating of materials
+    \item setting of home page and about page
+    \item setting of default image
+    \item gather and view statistics about material usage
+\end{itemize}
+
+\subsection{Non-functional requirements}
+
+Non-functional requirements represent a set of conditions that the application needs to be aware of, since they can limit its operation by disallowing use of some technologies or impose that certain metrics such as quality of delivery are met.
+
+\begin{itemize}
+	\item application needs to be runnable on Forpsi server~\cite{forpsi}
+	\item Data are to be in a MySQL database
+	\item PHP 7+
+	\item internet connection and web browser
+	\item application should be mobile centric
+	\item focus on user-friendliness
+\end{itemize}
+
+\subsection{Use case diagram}
+
+The use case diagram is a behavioral diagram from Unified Modeling Language (UML). It is a graphical representation of the relations between the uses of the system and their users. It highlights the system's functionality from the point of view of the user. The user is not necessarily a physical person and is often called an actor. The diagram differentiates between actors' roles. Roles can be grouped into hierarchical structures. Actions are always specific to a connected actor and passed down in the hierarchies.
+
+<< INSERT USE CASE DIAGRAM HERE >>
+
+The diagram shows a need to introduce a two-layer design to the application: the public layer and the administration.
+
+The public layer is available to anyone, allowing access to the saved materials. The materials can be searched for by their titles and filtered by assigned properties. It should also be possible to view the recent top performers. Every material can be viewed in more detail, where more detailed content is given, attachments can be viewed and downloaded, and where the material can be rated.
+
+The administration layer is the core functionality of the application, so every user accessing it needs to pass an authentication process, depicted by \textit{Login} action of any user. After logging in, the administrator can view the usage statistics on a dashboard page. He can create, modify, or delete virtually any data contained in the application's database, with constraints placed on tags~\ref{FILTERS}. All the data assignable to a material can be created during its creation, simplifying the work significantly by removing the need to go back and forth. Any administrator can also change the application's configured home and about page and the default image that is shown for each material when no image is present.
+
+\section{Data modelling with ERD}
+
+An Entity-Relationship Diagram (ERD) is a graphical representation of entities and their relationships. It is commonly used when designing databases to model the system's data structure. It is composed of entities, attributes, and relationships. There may be many entities, each depicting a class of objects used in the system or table in the database. Each entity can have multiple attributes or, in other words, columns of data. Tables may be related to other tables, creating relationships. Relationships are used to tie data into more complex structures.
+
+Since the application is a standalone product, with the only constraint being a MySQL database, the schema differs significantly from the original. It should also be noted that the actual database uses a custom prefix before entity names.
+
+<< INSERT ERD HERE >>
+
+The ERD shown above displays ten separate entities. The \textit{migrations} entity is a special one, added in case a database migration is required. It holds the information about the executed migration, allowing for rollbacks if defined. The \textit{config} handles the distribution of settings settable by admins, such as the replacement of the aforementioned default image. Other entities are the ones that store the actual information.
+
+Materials are saved into \textit{materials}, with additional columns such as \textit{material\_views} or \textit{material\_rating\_count} added to reduce loading times and enable easier sorting. Tags and metadata are contained in \textit{properties} and connected to materials by a connector entity \textit{material\_property}. Data in \textit{properties} can be hierarchical, where \textit{property\_tag} acts as a foreign key for a parent property. Related materials are kept inside of \textit{material\_material} entity, where a relation can be on either side and still be considered. Each material can be rated in \textit{ratings}. Each row holds a rating by a single user, with the average computed right into the material.
+
+Attachments belong in \textit{resources}. Each resource has a predefined type: file, link, or thumbnail. Files and thumbnails hold only their names and extensions inside \textit{resource\_path}, with the full path being handled by the application in conjunction with \textit{material\_id} and the default upload path. Links have the entire value saved.
+
+The application is deployed with hundreds of objects already defined and saved into the database, namely data ported from the original implementation.
+
+\section{Wireframing}
+
+<< INSERT FILTER WIREFRAME HERE >>
+
+<< INSERT PUBLIC ALL WIREFRAME HERE >>
+
+<< INSERT PUBLIC SINGLE WIREFRAME HERE >>
+
+<< INSERT ADMIN ALL WIREFRAME HERE >>
+
+<< INSERT MATERIAL FORM HERE >>
+
+<< INSERT MODAL WIREFRAMES HERE >>
+
+\chapter{Implementation}
+
+\section{CodeIgniter4}
+
+<< short framework definition >>
+
+<< reason for selecting this framework >>
+
+\subsection{Setup and Updating}
+
+<< steps needed to transfer to deploy >>
+
+<< steps needed to update version >>
+
+<< specifics of matching local deployment enviroment with server ? MAYBE ?>>
+
+\subsection{Project structure}
+
+\section{Public section}
+
+\section{Administration section}
 
 \newpage
 
