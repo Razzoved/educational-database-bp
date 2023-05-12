@@ -438,7 +438,7 @@ Non-functional requirements represent a set of conditions that the application n
 
 The application should be mobile centric, meaning designed for mobile use first and only after that for computers or devices with larger screen sizes. There should be high level of focus on the desing of user-friendly interface. Each action should be well understood and simple to do. This requirement is weighed more in the management in this case.
 
-\subsection{Use case diagram}
+\section{Use case diagram}
 
 The use case diagram is a behavioral diagram from Unified Modeling Language (UML). It is a graphical representation of the relations between the users and their requirements on the system. A use case diagram highlights the system's functionality from the point of view of one or many users. The user is not necessarily a physical person and is generally called an actor. The diagram differentiates between the actors' roles, even if the actor is one user in reality. Roles can be grouped into role hierarchies, in which the children inherit the use cases from their parents. A use case diagram is often used to aid in stating the systems' design goals and comunicating those intentions to clients.
 
@@ -462,9 +462,9 @@ After logging in, the administrator must be able to see usage statistics and man
 
 \section{Data modelling with ERD}
 
-An Entity-Relationship Diagram (ERD) is a graphical representation of entities and their relationships. It is commonly used when designing databases to model the system's data structure. It is composed of entities, attributes, and relationships. There may be many entities, each depicting a class of objects used in the system or table in the database. Each entity can have multiple attributes or, in other words, columns of data. Tables may be related to other tables, creating relationships. Relationships are used to tie data into more complex structures.
+An Entity-Relationship Diagram (ERD) is a graphical representation of data entities and their relationships. It is commonly used when designing databases to model the system's data structure. An ERD consists of entities, entity attributes, and relationships. Every entity represents a single data object in the system. Sometimes there is a need for connecting two entites in a many-to-many relationship, which is not possible in a typical database and an additional connector is required to separate such relation into a many-to-one one-to-many relation. ERD does not have a limit on the number of data entities, however it is good practice to try and keep them at minimum. Each entity can have multiple attributes. Attribute is a representation of a value of a column for a given some instance of an entity. Each attribute can have constraints imposed upon it, such as a primary key or foreign key constraint.
 
-Since the application is a standalone product, with the only constraint being a MySQL database, the schema differs significantly from the original. It should also be noted that the actual database uses a custom prefix before entity names.
+The new implementation will be a standalone project, and does not need to conform to WordPresses' guidelines anymore. The only limiting factor is a requirement of compatibility with a MySQL database driver. The final schema will be different from the plugins' original. The ERD~\ref{fig:erd} displays 10 separate entities.
 
 \begin{figure}
 	\begin{center}
@@ -476,17 +476,32 @@ Since the application is a standalone product, with the only constraint being a 
 	\label{fig:erd}
 \end{figure}
 
-The ERD~\ref{fig:erd} displays ten separate entities. The \textit{migrations} entity is a special one, added in case a database migration is required. It holds the information about the executed migration, allowing for rollbacks if defined. The \textit{config} handles the distribution of settings settable by admins, such as the replacement of the aforementioned default image. Other entities are the ones that store the actual information.
+Two of the entities serves as support for the application and do not have any relations. The \textit{migrations} entity is added in case a database migration is needed. It holds the information about the successful migrations and enables their rollbacking if it is defined. The \textit{config} handles the storage and distribution of settings configurable by administrators, like the replacement of the aforementioned default image.
 
-Materials are saved into \textit{materials}, with additional columns such as \textit{material\_views} or \textit{material\_rating\_count} added to reduce loading times and enable easier sorting. Tags and metadata are contained in \textit{properties} and connected to materials by a connector entity \textit{material\_property}. Data in \textit{properties} can be hierarchical, where \textit{property\_tag} acts as a foreign key for a parent property. Related materials are kept inside of \textit{material\_material} entity, where a relation can be on either side and still be considered. Each material can be rated in \textit{ratings}. Each row holds a rating by a single user, with the average computed right into the material.
+The following entities store the application data.
 
-Attachments belong in \textit{resources}. Each resource has a predefined type: file, link, or thumbnail. Files and thumbnails hold only their names and extensions inside \textit{resource\_path}, with the full path being handled by the application in conjunction with \textit{material\_id} and the default upload path. Links have the entire value saved.
+Materials are saved into \textit{materials}. Several rebundant columns are added to them in order to reduce loading times and allow for an easire sorting later in the implementation. The rebundant columns are \textit{material\_views}, \textit{material\_rating} and \textit{material\_rating\_count}. Each can be computed by aggregating their relative tables, but aggregation is costly and can be done on updates, instead of selects. We can presume that selecting is a much more frequent operation.
 
-The application is deployed with hundreds of objects already defined and saved into the database, namely data ported from the original implementation.
+Originally called  taxonomies are stored in a \textit{properties}. Properties will also be called tags in the implementation. Properties can be part of property hierarchies, forming tree-like structures where \textit{property\_tag} acts as a parent of the property. Additional connector table is required to assign properties to materials without duplication.
 
-\section{Wireframing}
+Most of the original metadata are contained in \textit{resources} and connected to materials by a connector entity. Resources include URLs, downloadable files and thumbnails. Paths are stored as relative to the root folder of the application. Links have the entire value saved.
 
-Wireframing is a technique used in early stages of application development. 
+Related materials are kept inside of \textit{material\_material} entity, where each row forms a bi-directional relation. A material can be related to an unlimited amount of other materials, but not self.
+
+Each material can be rated and the ratings are stored in \textit{ratings}. Each row holds a rating of a material given by a single user, with the average computed and saved into the material.
+
+The difference in the database proved hard to overcome when importing the original database to the new implementation. It was deemed to be about the same work as manual upload, which was done instead and served as a first real test of the system.
+
+\section{UX Design}
+
+”User Experience (UX) design it the act and art of crafting the interface and interactions for a website or application~\cite{hamm14}." Wireframing is just one of its parts that produces envisionable layouts of what the final product could look like. Wireframes are usually very bare, composing only of boxes, triangles and other simple shapes, but still give direction. UX design is usually prefaced with an in-depth research of the target audience along with discovery of requirements, consideration of limitations of technologies, and, in case of redesigning an application, the question of what is hampering the users.
+
+In case of the original, most of the complaints came from the administrators, but the publicly available view had its share of problems too. From the thesis~\cite{lang18} it can be seen that the design and wireframing were done with larger screens in mind. In the past few years the use of mobile devices grew exponentially with now over 58\,\% of worldwide internet traffic being mobile devices~\cite{mobile_usage}. The specific issues are elaborated upon in plugin analysis section~\ref{sect:plugin}.
+
+\subsection{Wireframes}
+
+The first and foremost desicion was on the layout of the filters. Filters are one of the most used parts of the application, present in both the public and administration layers. The layout needs to support the nesting of properties. The implemented design~\ref{fig:filters} needs to be very flexible. Each \textit{property} that has children can be closed. Every property can be selected, so checkboxes have been added. If the checkbox is checked and the item has children, the children should dissappear. There were cases where one category contained a high number of values, so a \textit{show more/less} button is added to further reduce the displayed item count. Similar layout is used inside material details, but with no checkboxes.
+
 \begin{figure}
 	\begin{center}
 		\begin{minipage}{.3\textwidth}
@@ -499,6 +514,8 @@ Wireframing is a technique used in early stages of application development.
 	\caption{Wireframes of one group of filters}
 	\label{fig:filters}
 \end{figure}
+
+Another step was a creation of a materials' card~\ref{fig:mat-card-mobile}. Card is an overview of the materials's information, and should be used when displaying multiple materials on one page. It shows a thumbnail at the top, followed by the title of the material, and then other details with most important being the rating. The whole card should indicate that it is clickable.  On larger screen, the card is more horizontal than vertical, but shows the same data~\ref{fig:mat-card-pc}.
 
 \begin{figure}
 	\begin{center}
@@ -520,6 +537,8 @@ Wireframing is a technique used in early stages of application development.
 	\label{fig:mat-card-pc}
 \end{figure}
 
+With those two components, the public page can be designed. The mobile version~\ref{fig:page-mobile} is stacked in one column. On top of the page a navigation bar is present. The navigation bar is toggleable if the links do not fit, showing them on separate rows (3). Under navigation, a page title is added.  The filters can be toggled betwen hide and show, freeing scrolling space. To add the ability to search for materials, a search bar is added. The only item left is the cards, which can be paged.
+
 \begin{figure}
 	\begin{center}
 		\begin{minipage}{.3\textwidth}
@@ -538,6 +557,8 @@ Wireframing is a technique used in early stages of application development.
 	\label{fig:page-mobile}
 \end{figure}
 
+The computer version uses a two column layout~\ref{fig:page-pc}, with one being a much smaller sidebar where the filters are placed. The rest is similar to mobile version, only using the space more freely, and missing the ability to hide all of the filters completely. Navigation bar should fit all links without the need for toggling, too.
+
 \begin{figure}
 	\begin{center}
 		\begin{minipage}{.9\textwidth}
@@ -547,6 +568,10 @@ Wireframing is a technique used in early stages of application development.
 	\caption{Public page}
 	\label{fig:page-pc}
 \end{figure}
+
+The material details use the same layout as the public page~\ref{fig:page-pc}. The only big difference is the header. Header contains the information seen on cards, excepth the description of the material. Thumbnail prefers beign on left side, switching to full width on mobile. Go back button should be present to allow intuitive return to the all materials page. Content, attachments and other features are column stacked below the header.
+
+No additional wireframes were made, because the administration follows the same guidelines. Main differences are that administration cards contain additional information, such as ids of materials, date of last update or current status.  They also include clickable buttons enabling editing and deletion. Other design details were decided upon during the implementation.
 
 \chapter{Implementation}
 
