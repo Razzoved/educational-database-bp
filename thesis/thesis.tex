@@ -74,7 +74,7 @@
         functionality, modified by including changes requested by the ENAI
         members. Its primary focus is on improving the administration interface,
         file handling, and filtering. The application is made available on the
-        ENAI (European Network for Academic Integrity) website.
+        ENAI (European Network for Academic Integrity) website~\cite{enai_materials}.
     },
     thanks      = {%
         I want to give my thanks mainly to my supervisor, Mgr. Tomáš Foltýnek, Ph.D.,
@@ -237,7 +237,7 @@ section~\ref{sect:wordpress}.
 Hypertext PreProcessor (PHP) is the currently most used \mbox{server-side} scripting
 language. Being an \mbox{open-source} project able to run on most operating systems
 ensures portability to almost any server. Its main advantages are platform and database
-independency or easy understandability with \mbox{C-like} syntax. It offers many
+independence or easy understandability with \mbox{C-like} syntax. It offers many
 library functions by default, such as array or hashing helpers, easing the burden
 on developers. PHP code can be embedded into HTML files. The server reads and
 alters the contents based on the embedded code before sending the page to the
@@ -246,20 +246,8 @@ service virtually any content, whether in the form of small project or
 a \mbox{large-scale} website like Facebook. The updates to PHP are mostly backward
 compatible, so little or no changes are usually required.
 
-\section{MVC}
-
-The Model-View-Controller (MVC) pattern is a popular design pattern used in web development~\cite{MVC}. Its main idea is to separate the application into three interconnected components: the Model, the View, and the Controller. The MVC pattern's primary benefit is promoting the division of concerns and modularity. By splitting the application into distinct components, each responsible for a specific set of tasks, developers can focus on one component at a time. Changes to that component do not necessarily affect the other components. This makes it easier to maintain and update the application over time.
-
-The Model represents the application's data and business logic, defining how data is stored, manipulated, and retrieved. It provides all methods for interacting with the data and is responsible for maintaining their consistency and integrity.
-
-The View component represents the user interface and may be thought of as a front-end of the application. It is responsible for presenting data to the user in a visually appealing and understandable way and allowing interactions between the user and the application.
-
-The Controller component acts as an intermediary between the Model and the View. It takes the inputs received from the user in the View, optionally verifies or transforms those inputs, then processes them with the help of the Model, and updates the View with the result.
-
 \section{WordPress}
 \label{sect:wordpress}
-
-\subsection{About}
 
 WordPress is the most popular content management system. It is an \mbox{open-source}
 platform running on PHP that allows anyone to contribute to its improvement.
@@ -271,8 +259,6 @@ WordPress has a large and active community of users who share knowledge and
 resources related to WordPress development. The use of WordPress plugins
 enabled developers to participate in this community and leverage existing
 WordPress features and knowledge.
-
-\subsection{Plugins}
 
 The core of WordPress is designed to be more lightweight and flexible. A WordPress
 plugin is a collection of PHP scripts that can be accompanied by custom stylesheets
@@ -331,7 +317,7 @@ Some of the course-focused systems are:
 
 \subsection{Other}
 
-The other premade solutions are systems similar to WordPress. However, even with a CMS, the application would need to be built from scratch. Moreover, since the work already aims to replace the existing WordPress plugin with a custom PHP solution, using another CMS would defy the purpose. Due to those reasons, this group is ignored too.
+The other premade solutions are systems similar to WordPress. However, even with a CMS, the application would need to be built from scratch. Moreover, since the work already aims to replace the existing WordPress plugin with a custom PHP solution, using another CMS would defy the purpose. Due to those reasons, this group is denied too.
 
 Some of the considered open-source instances were:
 \begin{itemize}
@@ -342,6 +328,20 @@ Some of the considered open-source instances were:
 
 \end{itemize}
 
+\section{Framework}
+
+TODO: what is framework
+
+\section{MVC}
+
+The Model-View-Controller (MVC) pattern is a popular design pattern used in web development~\cite{MVC}. Its main idea is to separate the application into three interconnected components: the Model, the View, and the Controller. The MVC pattern's primary benefit is promoting the division of responsibilities and modularity. By splitting the application into distinct components, each meant for a specific set of tasks, developers can focus on one component at a time. Changes to that component do not necessarily affect the other components. This makes it easier to maintain and update the application over time.
+
+The Model represents the application's data and business logic, defining how data is stored, manipulated, and retrieved. It provides all methods for interacting with the data and is responsible for maintaining their consistency and integrity.
+
+The View component represents the user interface and may be thought of as a front-end of the application. It is responsible for presenting data to the user in a visually appealing and understandable way and allowing interactions between the user and the application.
+
+The Controller component acts as an intermediary between the Model and the View. It takes the inputs received from the user in the View, optionally verifies or transforms those inputs, then processes them with the help of the Model, and updates the View with the result.
+
 \chapter{Analysis and Design}
 \label{chap:analysis}
 
@@ -351,7 +351,7 @@ and the third discusses \mbox{non-functional} requirements.
 \section{Plugin}
 \label{sect:plugin}
 
-The original application is a plugin for WordPress. It is an online learning platform that provides a variety of materials and resources on various topics on academic integrity. The analysis ascertains its structure, design, and the possibility of usage as a code base instead of starting from nothing. After the analysis, it was clear that putting the original code to use would prove more difficult than starting from zero~\ref{subsect:plugin-structure}. The application is still meant to be a replacement, so the existing user interface and data need to be taken into account while discovering the requirements. To get more detailed information about the plugin, see the thesis written by Leoš Lang~\cite{lang18}.
+The original application is a plugin for WordPress. It is an online learning platform that provides a variety of materials and resources on various topics on academic integrity. The analysis ascertains its structure, design, and the possibility of usage as a code base instead of starting from scratch. After the analysis, it was clear that putting the original code to use would prove more difficult than starting from zero~\ref{subsect:plugin-structure}. The application is still meant to be a replacement, so the existing user interface and data need to be taken into account while discovering the requirements. To get more detailed information about the plugin, see the thesis written by Leoš Lang~\cite{lang18}.
 
 \subsection{Structure}
 \label{subsect:plugin-structure}
@@ -378,7 +378,7 @@ The plugin works as an e-learning database. As such, it must handle educational 
 	\item Title - the name of the material.
 	\item Sender - the name of the person who sent or created the material.
 	\item Date - of when the material was published.
-	\item Type - indicates the contents of the material.
+	\item Type - indicates the content type of the material.
 	\item Tags - categories and other metadata.
 	\item Comments - provided by users to receive feedback on materials.
 	\item Rating - provided by users to favor quality materials.
@@ -412,7 +412,7 @@ There are many problems with the user interface, and the rework hopes to address
 
 \subsection{Functional requirements}
 
-Based off the analysis of the plugin and discussions with the ENAI personel, new functional requirements were stated. Those requirements represent a set of functionalities that the application needs to provide to its users.
+Based on the analysis of the plugin and discussions with the ENAI personel, new functional requirements were stated. Those requirements represent a set of functionalities that the application needs to provide to its users.
 
 \begin{itemize}
     \item creation and management of materials, resources, tags
@@ -430,25 +430,35 @@ Based off the analysis of the plugin and discussions with the ENAI personel, new
 Non-functional requirements represent a set of conditions that the application needs to be aware of, since they can limit its operation by disallowing use of some technologies or impose that certain metrics such as quality of delivery are met.
 
 \begin{itemize}
-	\item application needs to be runnable on Forpsi server~\cite{forpsi}
-	\item Data are to be in a MySQL database
+	\item application must be compatible with Forpsi server~\cite{forpsi}
+	\item data are saved in a MySQL database
 	\item PHP 7+
 	\item internet connection and web browser
-	\item application should be mobile centric
-	\item focus on user-friendliness
 \end{itemize}
+
+The application should be mobile centric, meaning designed for mobile use first and only after that for computers or devices with larger screen sizes. There should be high level of focus on the desing of user-friendly interface. Each action should be well understood and simple to do. This requirement is weighed more in the management in this case.
 
 \subsection{Use case diagram}
 
-The use case diagram is a behavioral diagram from Unified Modeling Language (UML). It is a graphical representation of the relations between the uses of the system and their users. It highlights the system's functionality from the point of view of the user. The user is not necessarily a physical person and is often called an actor. The diagram differentiates between actors' roles. Roles can be grouped into hierarchical structures. Actions are always specific to a connected actor and passed down in the hierarchies.
+The use case diagram is a behavioral diagram from Unified Modeling Language (UML). It is a graphical representation of the relations between the users and their requirements on the system. A use case diagram highlights the system's functionality from the point of view of one or many users. The user is not necessarily a physical person and is generally called an actor. The diagram differentiates between the actors' roles, even if the actor is one user in reality. Roles can be grouped into role hierarchies, in which the children inherit the use cases from their parents. A use case diagram is often used to aid in stating the systems' design goals and comunicating those intentions to clients.
 
-<< INSERT USE CASE DIAGRAM HERE >>
+\begin{figure}
+	\begin{center}
+		\begin{minipage}{1\textwidth}
+			\includegraphics[width=\textwidth]{pictures/use-case-diagram.png}
+		\end{minipage}
+	\end{center}
+	\caption{Use case diagram}
+	\label{fig:use-case}
+\end{figure}
 
-The diagram shows a need to introduce a two-layer design to the application: the public layer and the administration.
+As seen on the diagram~\ref{fig:use-case}, the application requires a two level design approach: the presentation layer and a management layer.
 
-The public layer is available to anyone, allowing access to the saved materials. The materials can be searched for by their titles and filtered by assigned properties. It should also be possible to view the recent top performers. Every material can be viewed in more detail, where more detailed content is given, attachments can be viewed and downloaded, and where the material can be rated.
+The presentation layer, which will also be called a public layer, is accessible by anyone. Its main responsibility is the presentation of saved materials to anyone visiting the website. In this case there are two separate functionalities, first a view of multiple materials and second a view of a single material in greater detail. In the first case the materials should be searchable by their titles and at the same time filterable by their assigned tags. Every user should be able to view the top performing materials and every material must be viewable in more detail. The details should contain a full length content with various attachments, be it links which can be visited or files which can be downladed, and an interactible material rating.
 
-The administration layer is the core functionality of the application, so every user accessing it needs to pass an authentication process, depicted by \textit{Login} action of any user. After logging in, the administrator can view the usage statistics on a dashboard page. He can create, modify, or delete virtually any data contained in the application's database, with constraints placed on tags~\ref{FILTERS}. All the data assignable to a material can be created during its creation, simplifying the work significantly by removing the need to go back and forth. Any administrator can also change the application's configured home and about page and the default image that is shown for each material when no image is present.
+The management layer is the core functionality of the application. It should be restricted by an authentication process that every user needs to pass before being granted access. This should serve to protect the vulnerable database from malicious actors. This process is depicted by \textit{Login} action of any user~\ref{fig:use-case}. Logged in users can logout if they desire to do so. Users' password should be resetable.
+
+After logging in, the administrator must be able to see usage statistics and manage the database. Database management includes creation, modification and removal of all relevant data entities. Tags should be protected from unwanted removal if they are in use. Resources should be fully managed by the editor that handles the materials, with the only exception being unused files. Unused files are files that were assigned to some material, lived in it for some time, and then were either replaced or removed. All the data assignable to a material can be created during its creation, simplifying the work significantly by removing the need of repeated operations. Administrators should be able to create new administrators. Any administrator should be able to change the application's parent reference and the reference to the about page. Each material uses a shared default image as a thumbnail in case of having none, and this default image should be configurable too. This configured image should always be reversible to the default one.
 
 \section{Data modelling with ERD}
 
@@ -456,9 +466,17 @@ An Entity-Relationship Diagram (ERD) is a graphical representation of entities a
 
 Since the application is a standalone product, with the only constraint being a MySQL database, the schema differs significantly from the original. It should also be noted that the actual database uses a custom prefix before entity names.
 
-<< INSERT ERD HERE >>
+\begin{figure}
+	\begin{center}
+		\begin{minipage}{1\textwidth}
+			\includegraphics[width=\textwidth]{pictures/erd-diagram.png}
+		\end{minipage}
+	\end{center}
+	\caption{Entity relationship diagram}
+	\label{fig:erd}
+\end{figure}
 
-The ERD shown above displays ten separate entities. The \textit{migrations} entity is a special one, added in case a database migration is required. It holds the information about the executed migration, allowing for rollbacks if defined. The \textit{config} handles the distribution of settings settable by admins, such as the replacement of the aforementioned default image. Other entities are the ones that store the actual information.
+The ERD~\ref{fig:erd} displays ten separate entities. The \textit{migrations} entity is a special one, added in case a database migration is required. It holds the information about the executed migration, allowing for rollbacks if defined. The \textit{config} handles the distribution of settings settable by admins, such as the replacement of the aforementioned default image. Other entities are the ones that store the actual information.
 
 Materials are saved into \textit{materials}, with additional columns such as \textit{material\_views} or \textit{material\_rating\_count} added to reduce loading times and enable easier sorting. Tags and metadata are contained in \textit{properties} and connected to materials by a connector entity \textit{material\_property}. Data in \textit{properties} can be hierarchical, where \textit{property\_tag} acts as a foreign key for a parent property. Related materials are kept inside of \textit{material\_material} entity, where a relation can be on either side and still be considered. Each material can be rated in \textit{ratings}. Each row holds a rating by a single user, with the average computed right into the material.
 
@@ -468,17 +486,67 @@ The application is deployed with hundreds of objects already defined and saved i
 
 \section{Wireframing}
 
-<< INSERT FILTER WIREFRAME HERE >>
+Wireframing is a technique used in early stages of application development. 
+\begin{figure}
+	\begin{center}
+		\begin{minipage}{.3\textwidth}
+			\includegraphics[width=\textwidth]{pictures/filters_closed.png}
+		\end{minipage}
+		\begin{minipage}{.3\textwidth}
+			\includegraphics[width=\textwidth]{pictures/filters_opened.png}
+		\end{minipage}
+	\end{center}
+	\caption{Wireframes of one group of filters}
+	\label{fig:filters}
+\end{figure}
 
-<< INSERT PUBLIC ALL WIREFRAME HERE >>
+\begin{figure}
+	\begin{center}
+		\begin{minipage}{.35\textwidth}
+			\includegraphics[width=\textwidth]{pictures/material_mobile.png}
+		\end{minipage}
+	\end{center}
+	\caption{Material card for mobile devices}
+	\label{fig:mat-card-mobile}
+\end{figure}
 
-<< INSERT PUBLIC SINGLE WIREFRAME HERE >>
+\begin{figure}
+	\begin{center}
+		\begin{minipage}{1\textwidth}
+			\includegraphics[width=\textwidth]{pictures/material_pc.png}
+		\end{minipage}
+	\end{center}
+	\caption{Material card}
+	\label{fig:mat-card-pc}
+\end{figure}
 
-<< INSERT ADMIN ALL WIREFRAME HERE >>
+\begin{figure}
+	\begin{center}
+		\begin{minipage}{.3\textwidth}
+			\includegraphics[width=\textwidth]{pictures/page_mobile1.png}
+		\end{minipage}
+		\hfill
+		\begin{minipage}{.3\textwidth}
+			\includegraphics[width=\textwidth]{pictures/page_mobile2.png}
+		\end{minipage}
+		\hfill
+		\begin{minipage}{.3\textwidth}
+			\includegraphics[width=\textwidth]{pictures/page_mobile3.png}
+		\end{minipage}
+	\end{center}
+	\caption{Public mobile page: (1) default, (2) opened filters, (3) opened navigation}
+	\label{fig:page-mobile}
+\end{figure}
 
-<< INSERT MATERIAL FORM HERE >>
-
-<< INSERT MODAL WIREFRAMES HERE >>
+\begin{figure}
+	\begin{center}
+		\begin{minipage}{.9\textwidth}
+			\includegraphics[width=\textwidth]{pictures/page_pc.png}
+		\end{minipage}
+	\end{center}
+	\caption{Public page}
+	\label{fig:page-pc}
+\end{figure}
 
 \chapter{Implementation}
 
@@ -519,50 +587,47 @@ The application is deployed with hundreds of objects already defined and saved i
 	\item Grammarly
 	\item Mozilla Firefox
 	\item Git + Gitlab
+	\item WinSCP
+	\item Visual Paradigm
 \end{itemize}
 
 \newpage
 
-==========================
+\chapter{Conclusion}
 
-Název anglicky: Interactive database of educational materials on academic integrity
-Vedení:
+The aim of the thesis was to analyse, design and reimplement an e-learning database WordPress plugin into a standalone web application tailored specifically to the needs of ENAI.
 
-Mgr. Tomáš Foltýnek, Ph.D., učo 4374 (vedoucí)   
+The introduction first elaborated on the context of the project, helping readers get into the problematic.  The next part of took a look at the existence of premade system that would be possible to use in place of the new implementation. However, they were either too focused on the management of full courses, were a general content management system or handled wikipedias, none of which fullfilled the intended functionality of the application.
 
-Bc. Dita Dlabolová, učo 172761 (konzultant)   
+With the knowledge from the introduction an analysis of the plugin was made. The analysis focused on finding the exact functionality of the plugin and its interface and data flow much more than on its code. This way of research produced formal requirements on the application, which were then visuallized in a use case diagram and used in a data model. With both use and data model known, an abstract UI layout was created for many of the necessary components. This design was then implemented.
 
-Student (max. 1):
+The implementation uses a PHP framework~\cite{codeigniter4} as its backend, greatly simplifying and speeding up the development process. The framework operates on an MVC design pattern, which significantly increases the maintainability and modularity of the application.
 
-Jan Martinek, učo 484967, FI B-INF IN [sem 6, roč 3] • Student potvrzuje téma k obhajobě? Ano
-Prerekvizity: NOW(SBAPR)
+The product of the work is a new web application that provides an easy to use management of an educational databases. While the application is customized for ENAI, it is freely available for use and modifications~\cite{repository} under the GPT-3 licence.
 
-Garanční pracoviště tématu: Katedra teorie programování
+\subsection{Contributions of the work}
 
-Oficiální zadání:
+The work produced an open-source web application designed specifically for presentation and management of educational materials. 
 
-European Network for Academic Integrity (ENAI) is a consortium of higher education institutions
-aiming to support their members in the field of academic integrity. One of the key means of
-support is an interactive database of educational materials available from the ENAI website.
-The database has been widely used by students and academics from all around the world.
+It being open-source enables anyone to download it, possibly customize and then deploy to their own server all free of charge. The introduction spoke about a shortage of applications of this kind, which means that the application may increase the number of educational websites, benefiting both organizations and people. The main and intended contribution is its deployment to the ENAI web server, where it will run until it becomes obsolete. This server is already quite known, and the new application may help it grow further.
 
-The main task of the student will be to redesign and reimplement the content management
-system with regard to the feedback collected from the users. Specifically, the CMS should
-not rely on WordPress but become a stand-alone application. The other requirements include:
+The system of views and ratings should, along with the management of materials being locked behind authentication, provide a good solution for improvements in material quality by referring more favored articles over the subpar ones. The application also supports a virtually unlimited level of tag hierarchies, only limited by the complexity of the presentation to the user. This is a direct upgrade from the old implementation, where it was not possible. This should allow easier management of tags by grouping them together, and introduce an easier way of searching for whole categories.
 
-\begin{itemize}
-    \item make filtering and searching more user-friendly
-    \item implement user-friendly administration of the materials, including a tool to
-    analyse search queries and the use of materials
-    \item refine the system of tags, categories and other metadata
-    \item implement support for materials available in multiple languages
-\end{itemize}
+Another improvement is a quicker and easier management of files. Originally, you had to upload a file to the server in a separate window, wait for some time, then add it from the list of multiple uploaded files. This is a lot of unrequired steps, which the application reduced to just one click.
 
-Besides the regular contact with the supervisor, this topic includes also intensive
-communication in English with the ENAI executive manager, who will serve as a thesis
-consultant.
+\subsection{Possible future improvements}
 
-==========================
+The application meets the criteria stated at the start of the development, however there is always a possibility for improvements.
+
+For example the support for multi-lingual materials is done by bi-directional relations, which could be improved by implementing collections of materials created upon the addition of another language. Those collections could, aside from language, share their tags and in doing so allow for easier management.
+
+Another possible improvement would be an added support for more languages on the level of the whole application. Some parts already like validation already support such notion, however most do not. If a translation were to be provided, some minor changes would be required across the whole application, but a framework supported localization could then be used.
+
+As a last example, an algorithm for automatically finding similar relations could be implemented, which must be done by hand currently if needed and mixes with language support.
+
+\subsection{Evaluation}
+
+The application was created in a span of seven months with over five hundred commits, but the main bulk of the work came in the later part of development. While I do not have a precise measurement of the spent time on the project, it is at least three hundred hours. It is certain that the costs would accumulate if the project was not an unpaid one. The project is my first web application, having learnt all the languages during the development, with which I am very content.
 
 \printbibliography[heading=bibintoc] %% Print the bibliography.
 
