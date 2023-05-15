@@ -120,6 +120,23 @@
 % \markright{\textsc{Introduction}}
 % \addcontentsline{toc}{chapter}{Introduction}
 
+\chapter*{List of used tools}
+\begin{itemize}
+	\item Windows
+	\item Insomnia
+	\item Visual Studio Code
+	\item Laragon
+	\item HeidiSQL
+	\item Linux
+	\item Postman
+	\item Texmaker + fithesis4
+	\item Grammarly
+	\item Mozilla Firefox
+	\item Git + Gitlab
+	\item WinSCP
+	\item Visual Paradigm
+\end{itemize}
+
 \chapter{Introduction}
 
 Previously, it was almost impossible for people to share information globally.
@@ -321,11 +338,8 @@ The other premade solutions are systems similar to WordPress. However, even with
 
 Some of the considered open-source instances were:
 \begin{itemize}
-
 	\item \textbf{Omeka}~\cite{https://omeka.org/} is specifically designed for creating and managing digital collections and exhibits. It includes features such as customizable themes, metadata management, and access control to create a flexible and organized environment for digital content.
-	
 	\item \textbf{MediaWiki}~\cite{https://www.mediawiki.org/wiki/MediaWiki} is used by many organizations to create and manage wikis. It includes features such as page editing, version history, and access control that help create a collaborative and organized environment for content management. While it could be used for the application, there are better choices for material management.
-
 \end{itemize}
 
 \section{Framework}
@@ -345,20 +359,36 @@ The Controller component acts as an intermediary between the Model and the View.
 \chapter{Analysis and Design}
 \label{chap:analysis}
 
-The first part looks at the plugin. The second describes the functional requirements,
-and the third discusses \mbox{non-functional} requirements.
+The first part looks at the plugin. The second discusses the requirements on the new implementation. After requirements come the use cases, data modelling, and lastly UX design.
 
 \section{Plugin}
 \label{sect:plugin}
 
-The original application is a plugin for WordPress. It is an online learning platform that provides a variety of materials and resources on various topics on academic integrity. The analysis ascertains its structure, design, and the possibility of usage as a code base instead of starting from scratch. After the analysis, it was clear that putting the original code to use would prove more difficult than starting from zero~\ref{subsect:plugin-structure}. The application is still meant to be a replacement, so the existing user interface and data need to be taken into account while discovering the requirements. To get more detailed information about the plugin, see the thesis written by Leoš Lang~\cite{lang18}.
+The plugin that had been mentioned several times already is an extension for WordPress content management system. The extension serves as  an interface between user and the servers' filesystem and database. It provides a teaching and learning support for various topics on academic integrity. It has seen widespread use since its release, containing over 250 different materials. It is imperative that those materials are not lost during the transfer to the new implementation. To achieve this, it is important to determine the plugins' content and data structure. The following analysis is to fullfill this purpose and moreover review the possibility of using the plugins code instead as a base instead of starting from scratch. To get more  information about the plugin, see the thesis written by the plugins creator~\cite{lang18}.
+
+After the analysis, it was clear that putting the original code to use would prove more difficult than starting from zero~\ref{subsect:plugin-structure}. The application is still meant to be a replacement, so the existing user interface and data need to be taken into account while discovering the requirements. 
+
+\subsection{User interface}
+\label{subsect:plugin-ui}
+
+The very first step in the analysis of  the plugin is to familiarize ourselves with the plugins user interface, which will make the next steps easier to grasp by understanding their context. Its graphical design is quite plain, which is in no way a bad thing. There are many pages suffering from overdesign. In contrast this makes it look clean and easy to navigate.
+
+The plugin inherits the same navigation page as its parent site. This feature cannot be a part of the new implementation as it aims to be a separate software. The plugin adds several viewable pages: \begin{itemize}
+	\item \textbf{Material details} - shows all data of a single material, this includes connected data such as relations or files.
+	\item \textbf{Multiple materials} - the materials displayed in a list. This list is paged and can be filtered by both the search bar and filters. Every material shows its title, thumbnail, publish date, rating, short description, and views. 
+	\item \textbf{Materials table} - under restricted access. It shows all materials in a paged table. The table supports bulk operations, but lacks a satisfactory support for searching, filtering and sorting.
+	\item \textbf{Material editor} - under restricted access. It is used for editing or creation of a single material. Contains input required input fields for materials title, sender, type and content. Additionally it allows the assignment of taxonomies, thumbnail, files or a single link. Relations can be added manually. All of the additional features are hard to operate, either requiring a high amount of scrolling and clicking. For example the thumbnail is at the bottom right side of the editor, not easily accessible. Same goes for taxonomies. Files have to be uploaded to the shared servers directory, and only then can be added to the material, which is again a taxing process.
+	\item \textbf{Configuration} - under restricted access. Used for setting the theme and basic settings like the number of shown items per page.
+\end{itemize}
+
+Taxonomies can be managed anywhere in the plugins' administration area. It should be noted that the materials cannot have multiple external sites linked, unless added directly to the content. A material cannot have both an external link and files, always only one of the two. The search bar includes suggestions, but they are not very responsive.
+
+There are several faults with support for mobile devices. Most of the buttons appear often appear out of place. The filters use a different layout from the PC version, but are broken and cannot be closed after they were opened. Many of the filters often belong to a single category, and since there is no support for taxonomy hierarchies, it creates large lists that are hard to use.
 
 \subsection{Structure}
 \label{subsect:plugin-structure}
 
-The very first step is getting to know the structure of the plugin. At a glance, the plugin seems straightforward. It follows a standard WordPress plugin folder structure.
-
-\begin{itemize}
+At a glance, the plugin seems straightforward. It does not use the WordPress MVC framework, instead following a standard  plugin folder structure: \begin{itemize}
 	\item \textit{css/} - contains compiled scss files
 	\item \textit{sass/} - contains uncompiled scss files
 	\item \textit{img/} - contains default image assets
@@ -368,45 +398,27 @@ The very first step is getting to know the structure of the plugin. At a glance,
 	\item \textit{uninstall.php} - not implemented
 \end{itemize}
 
-However, this structure also indicates that the plugin does not leverage the WordPress MVC framework. Instead, it opts for a less graceful setup. It uses custom data types and implements their related functionalities by itself. The code is not very well documented outside of the mentioned thesis. The whole implementation heavily depends on WordPress and the methods it provides. The lack of proper documentation and high dependency on WordPress leads to a hard-to-separate and reimplement design. The plugin supports older versions starting with PHP version 5. This blocks newer updates. As such, a decision was made to focus on the frontend and database design choices rather than the plugin's rework with its code as a basis.
+The plugin uses a range of custom data types and implements their related functionalities by itself. The code is not very well documented outside of the mentioned thesis~\cite{lang18}. The whole implementation depends heavily on WordPress and its application interface.It support older version of PHP with guaranteed support for version 5. This directly translates to incompatibilities with newer versions.  Both the high dependecy and incompatibilities erected a decission to drop the plugin's code completely, using only its analysis. With this the database can finally be looked at.
 
-\subsection{Types of content}
-
-The plugin works as an e-learning database. As such, it must handle educational materials. The materials hold the following properties:
-
-\begin{itemize}
-	\item Title - the name of the material.
-	\item Sender - the name of the person who sent or created the material.
-	\item Date - of when the material was published.
-	\item Type - indicates the content type of the material.
-	\item Tags - categories and other metadata.
-	\item Comments - provided by users to receive feedback on materials.
-	\item Rating - provided by users to favor quality materials.
-	\item Content - can be a description of provided attachments or a complete learning experience.
-	\item Attachments - link to some website or files on the server.
+Since the plugin works as an educational database, it must handle educational materials. The materials can be decomposed into the following properties: \begin{itemize}
+	\item \textit{Title} - the name of the material.
+	\item \textit{Sender} - the name of the person who sent or created the material.
+	\item \textit{Date} - of when the material was published.
+	\item \textit{Type} - indicates the content type of the material.
+	\item \textit{Tags} - categories and other metadata.
+	\item \textit{Comments} - provided by users to receive feedback on materials.
+	\item \textit{Rating} - provided by users to favor quality materials.
+	\item \textit{Content} - can be a description of provided attachments or a complete learning experience.
+	\item \textit{Attachments} - link to a website or files on the server.
 \end{itemize}
 
 Sender as an attribute has only ever been used during the materials' creation, never shown otherwise, and can be removed. While shown, the type has never seen much use and should be merged into tags.
 
-Tags are a central part of the application. They are ordered in a one-level hierarchy in a category-to-value relationship. Over the years, many tags accumulated, categories started overflowing, and their refinement is long overdue.
+Tags are a central part of the application. In the plugin they are known under taxonomies. While the data structure allows hierarchization, the frontend never implemented it. Due to that they are ordered in a in a category-to-value relationship. Over the years, many tags accumulated, categories started overflowing, and their refinement is long overdue.
 
 The rating was originally a part of the comment system, where each comment could contain a rating of one through five. Many malicious users took advantage of the comments to spread spam and advertisement messages, and the comments were disabled. The rating should be a separate functionality in the new version, with comments never returning.
 
-The attachments could either be links or files. Files were saved into folders based on the year and month of their upload. This should be changed into a model where every attachment belongs directly to the material as per the administrator's request. More on the limitations of attachments is said in the user interface section~\ref{subsect:plugin-ui}.
-
-\subsection{User interface}
-\label{subsect:plugin-ui}
-
-The plugin provides several viewable pages: all or filtered materials, material details, and administration with configuration and a material editor. Its interface is quite plain, which is in no way a bad thing. The plainness makes it look clean and easy to navigate. The plugin offers the same navigation menu as ENAI's main page, which will not be a part of the new version due to separability.
-
-The view of all materials contains a search bar, a filter menu, and a list of found materials. This list is paged and can be filtered by both the search bar and the filters. Every material shows its title, thumbnail, publish date, rating, short description, and views. A similar view is present in the administration, except the data is shown in a sortable table.
-
-Upon clicking on any material, a user is redirected to its details, where all of the mentioned properties are visible, with full content replacing the description. Either a link or files are appended to the end of those details.
-Be aware that there is a word \textit{either}. Inside management, this click opens the material editor with values of selected material. New material is created similarly, except by clicking a particular button. Tags can be managed by the editor on the right side of the view anywhere in the plugins' administration area.
-
-Where the layout fails is on mobile devices and inside the administration. For example, many buttons appear out of place, and after opening the filters, they can no longer be closed. The main problem with administration is the absence of usage statistics and no way of ordering the materials by those values. Moreover, the attachments are clumsy at best. You can select the material to have a link attached or a collection of files. Never both. While it is possible to add links directly into content, it does not look or feel great. Assigning tags to materials is not easy either since they are shown in a block with no search available.
-
-There are many problems with the user interface, and the rework hopes to address all or at least a major part of them.
+The attachments could either be links or files. Files were saved into folders based on the year and month of their upload. This should be changed into a model where every attachment belongs directly to the material as per the administrator's request.
 
 \section{Requirements}
 
@@ -575,48 +587,60 @@ No additional wireframes were made, because the administration follows the same 
 
 \chapter{Implementation}
 
+At clients' side, the application uses HTML to present the views and CSS to style them. The CSS was not written directly, but compiled from SCSS. To add interactivity, JavaScript code was either embedded directly into the HTML files or loaded from their own. The applications' server side is written entirely in PHP. To help with the implementation, a PHP framework CodeIgniter4 was used~\ref{sect:codeigniter}.
+
+The application was developed on a local development server with the help of Laragon. The development server had been setup to match the deployment server as closely as possible.
+
+A versioning tool git was used to improve the development workflow. During development, a GitLab repository on the FI domain had been used, but the final product resides on GitHub with revised commit history.
+
+The editor of choice was Visual Studio Code. Visual Studio Code is a powerful code editor that comes with easy and quick extendability by way of extensions. It integrates the git directly into the editor. Further extension were used to provide code suggestions, SCSS compiling, error control and syntax hightlighting.
+
 \section{CodeIgniter4}
+\label{sect:codeigniter}
 
-<< short framework definition >>
+CodeIgniter is an Application Development Framework - a toolkit - for people who build web sites using PHP~\cite{codeigniter}. At the time of development the latest release version was CodeIgniter4, and it is the one the application is implemented in. Codeigniter is a small framework which aims to offer an exception performance. The framework can have core parts easily extended or completely replaced to make the system work the way you need it to. In short, CodeIgniter is the malleable framework that tries to provide the tools you need while staying out of the way. It does not require the use of the command line, making all the features available right away with almost no additional setup. It is well documented~\cite{codeigniter4}, has a sizable community and is actively maintained. The framework recommends development under the MVC pattern.
 
-<< reason for selecting this framework >>
+Several other frameworks were considered before choosing CodeIgniter, specifically Laravel and Symfony. Both seemed to be good choices, however Symfony requires PHP 8.1 which has not been supported at the deployment server. Laravel is an extensive framework, offering many features. This comes with a cost of higher learning curve and as this was my first PHP project, a smaller framework was selected.
+
+\subsection{Project structure}
 
 \subsection{Setup and Updating}
 
-<< steps needed to transfer to deploy >>
+Before deploying CodeIgniter4, it is imperate to verify that the server is able to run PHP 7.4 or newer.  The \textit{intl}, \textit{mbstring}, \textit{json} extensions must be enabled. The application uses the provided Image class to manipulate thumbnails, so a \textit{imagick} must be enabled too. Afterwards the framework can be installed using composer, which is recommended for easier future updates. The server can then be configured using a \textit{.env} file in the frameworks root directory.
 
-<< steps needed to update version >>
+Running the application is as simple renaming the applications' folder to your base url and modifying the env file with the database credentials and base applications URL. Before deploying the application, it is recommended to change the enviroment to production from development to hide debugging tools.
 
-<< specifics of matching local deployment enviroment with server ? MAYBE ?>>
+Sometimes it is desirable to update the framework to a newer version. Be warned that in doing so incompatibilities may be introduced to the application. Updating can be done with either the composer or manually by following the patch notes. The patch notes should be checked even with composer updates, since new versions of App directiory files are not applied automatically and must be merged either by hand or using provided in the documentation.
 
-\subsection{Project structure}
+The first obstacle to the applications creation came in the form of inability to configure a new virtual host on the deployment machine. Virtual hosts are the preffered way of using CodeIgniter or any web based application. To circumvent this, a new \textit{.httaccess} file was created, rerouting all non-file traffic from the root folder to the public folders' index. The new file also prevent unwanted access to the root directory.
+
+\shorthandoff{-}
+\begin{markdown*}{fencedCode}
+~~~~~~  bash
+DirectoryIndex public/index.php
+Options -Indexes
+
+<IfModule mod_rewrite.c>
+   	 RewriteEngine On
+
+    # Deny root directory file access
+    RewriteCond %{REQUEST_FILENAME} -f
+    RewriteCond %{REQUEST_URI} materials/[^/]+$
+    RewriteCond %{REQUEST_URI} !admin/materials/[^/]+$
+    RewriteRule ^(.*)$ - [F,L]
+
+    # Send request to CodeIgniter controller
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+   	RewriteRule ^(.*)$ public/$1 [NC,L,QSA]
+</IfModule>
+~~~~~~
+\end{markdown*}
+\shorthandon{-}
 
 \section{Public section}
 
 \section{Administration section}
-
-\newpage
-
-------- PROVIZORNI POUZITE NASTROJE
-
-\begin{itemize}
-	\item Windows
-	\item Insomnia
-	\item Visual Studio Code
-	\item Laragon
-	\item HeidiSQL
-	\item Linux
-	\item Postman
-	\item Texmaker
-	\item fithesis4
-	\item Grammarly
-	\item Mozilla Firefox
-	\item Git + Gitlab
-	\item WinSCP
-	\item Visual Paradigm
-\end{itemize}
-
-\newpage
 
 \chapter{Conclusion}
 
