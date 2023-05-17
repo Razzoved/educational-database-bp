@@ -5,10 +5,11 @@
 
 # unignore base thesis files
 !fithesis4.cls
-latextmkrc
-sources.bib
-fithesis/
-fithesis/*
+!latextmkrc
+!fithesis/
+!fithesis/*
 
-terms.tex
-thesis.tex
+!sources.bib
+!terms.tex
+!thesis.tex
+!thesis.pdf
