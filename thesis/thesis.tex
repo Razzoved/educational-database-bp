@@ -63,8 +63,8 @@
     advisor     = {Mgr. Tomáš Foltýnek, Ph.D.},
     title       = {Interactive database of educational materials on academic integrity},
     TeXtitle    = {INTERACTIVE DATABASE OF EDUCATIONAL MATERIALS ON ACADEMIC INTEGRITY},
-    keywords    = {PHP, CodeIgniter, MVC, database, JavaScript, material, academic integrity},
-    TeXkeywords = {PHP, CodeIgniter, MVC, database, JavaScript, material, academic integrity},
+    keywords    = {PHP, framework, MVC, CodeIgniter, JavaScript, database, material, academic integrity},
+    TeXkeywords = {PHP, framework, MVC, CodeIgniter, JavaScript, database, material, academic integrity},
     abstract    = {%
         The thesis aims to reimplement an existing WordPress plugin created by
         Leoš Lang into a new web application. The resulting application uses
@@ -73,8 +73,12 @@
         in both design and functionality. It mostly matches the original
         functionality, modified by including changes requested by the ENAI
         members. Its primary focus is on improving the administration interface,
-        file handling, and filtering. The application is made available on the
-        ENAI (European Network for Academic Integrity) website~\cite{enai_materials}.
+        file handling, and filtering. The application is availablefor browsing
+        on the ENAI (European Network for Academic Integrity) website.
+        
+        \url{https://academicintegrity.eu/materials}~\cite{enai_materials}
+        
+        \url{https://github.com/Razzoved/educational-database-bp}~\cite{repository}
     },
     thanks      = {%
         I want to give my thanks mainly to my supervisor, Mgr. Tomáš Foltýnek, Ph.D.,
@@ -112,6 +116,9 @@
 \floatsetup[table]{capposition=top}
 \usepackage[babel]{csquotes} %% Context-sensitive quotation marks
 
+\newcommand{\imgref}[1]{(see Fig. \ref{fig:#1})}
+\newcommand{\cref}[1]{(ref. \ref{#1})}
+
 \begin{document}
 %% The \chapter* command can be used to produce unnumbered chapters:
 %% Unlike \chapter, \chapter* does not update the headings and does not
@@ -122,19 +129,35 @@
 
 \chapter*{List of used tools}
 \begin{itemize}
-	\item Windows
-	\item Insomnia
-	\item Visual Studio Code
-	\item Laragon
-	\item HeidiSQL
-	\item Linux
-	\item Postman
-	\item Texmaker + fithesis4
-	\item Grammarly
-	\item Mozilla Firefox
-	\item Git + Gitlab
-	\item WinSCP
-	\item Visual Paradigm
+	\item Linux - operating system used for writing the text of the thesis.
+
+	\item Grammarly - online tool for correcting texts in english.
+
+	\item Texmaker - tool for writing LateX documents. It was used with
+	fithesis4 template.
+
+	\item Windows - operating system, used for writing the code and running
+	the development enviroment.
+	
+	\item Insomnia - program used for testing the requests to the server.
+
+	\item Visual Studio Code - code editor. All of the application's code was written in it.
+
+	\item Laragon - program capable of running a local development server.
+
+	\item HeidiSQL - database management tool, used alongside Laragon.
+
+	\item Mozilla Firefox, Microsoft Edge, Google Chrome - web browsers.
+	Application was tested on all of them.
+
+	\item Git - versioning tool. GitLab FI (git management software hosted by
+	the faculty) was used during development, while GitHub holds the final
+	product for long-term unrestricted availability.
+
+	\item WinSCP - tool for transferring files from one computer to another.
+	The application was deployed to the server with it.
+
+	\item Visual Paradigm - tool for creating UML diagrams.
 \end{itemize}
 
 \chapter{Introduction}
@@ -248,7 +271,7 @@ of the thesis. A system that handles educational materials directly and simplifi
 the collection and management operations for the user. The other one is more advanced
 but serves a different purpose. It allows any user to create and manage websites
 without prior programming knowledge. One of these is WordPress, mentioned in
-section~\ref{sect:wordpress}.
+section~\cref{sect:wordpress}.
 
 \section{PHP}
 
@@ -287,73 +310,173 @@ a separate application.
 
 \section{Existing solutions}
 
-A search for a freely available and finished solution to the problem was conducted. The search revealed two distinct system design trends, each having a sizeable following. The following text elaborates further on those trends, adds several examples, and mentions why they are not used for the project.
+This section was written with help of ChatGPT.
 
-The first trend is systems categorized as Learning Management Systems (LMS). Those systems are a kind of CMS, albeit with a more specific focus. This focus is on delivering courses. The terms 'course' and 'educational material' are often used interchangeably, but the two have a number of key differences.
+A manual and AI-assisted search for a freely available software that could be used as a replacement
+for the plugin was conducted. It resulted in a reveal of two distinct system design trends. The following
+text elaborates further on those trends, adds several examples, and mentions why none of them was
+selected for for the project.
 
-A course is a structured educational experience that is designed to provide learners with a specific set of learning outcomes or objectives. A course typically has a defined start and end date and may be delivered in a variety of formats, such as in-person classes, online modules, or a combination of both. Courses usually have a set curriculum outlining their topics and learning activities. They may include assessments or evaluations to measure the learner's progress and understanding.
+The first of the trends if a category of systems known as Learning Management Systems (LMS). Those
+are a kind of CMS, albeit with a more specific focus. This focus is on delivering full-length courses. The terms
+'course' and 'educational material' are often used interchangeably, but the two have a number of key differences.
 
-Educational material refers to any content or resource designed to support learning and education. Such resources include textbooks, videos, tutorials, articles, and more. Unlike a course, an educational material is often self-paced, self-directed experience. This means that learners can access and use it on their own schedule and at their own pace.
+A course is a structured educational experience that is designed to provide learners with a specific set of
+learning outcomes or objectives. A course typically has a defined start and end date and may be delivered
+in a variety of formats, such as in-person classes, online modules, or a combination of both. Courses usually
+have a set curriculum outlining their topics and learning activities. They may include assessments or evaluations
+to measure the learner's progress and understanding.
 
-While both courses and educational material aim to support learning and education, courses are generally more structured and have clear outcomes, and require more preparation work before release. On the other hand, educational materials are more flexible from a creation standpoint. They also allow learners to choose which resources to use to support their learning goals in parts.
+Educational material refers to any content or resource designed to support learning, education, both from
+the view of students and teachers. Such resources include textbooks, exercises, videos, tutorials, articles, and more.
+Unlike a course, educational materials are often self-paced, self-directed experiences. This means that learners
+and educators can access and use them on their own schedule and at their own pace.
+
+While both courses and educational material aim to support learning and education, courses are generally
+more structured and have clear outcomes, and require more preparation work before release. On the other
+hand, educational materials are more flexible and have more uses, like teaching other than learning.
+
+The second trend were generalized CMS. This category contains all systems that are similar to WordPress.
 
 \subsection{System list}
 
-The following list was written with help of ChatGPT.
-
 \begin{itemize}
 
-	\item \textbf{Moodle}~\cite{moodle} is a very popular platform. It was created in 2002 by Martin Dougiamas, an educator from Australia. Nowadays, it has more than 160000 sites in no less than 240 countries. Moodle provides a wide range of features, including course management, assessments, collaboration tools, and more. It is extensible with plugins.
+	\item \textbf{Moodle}~\cite{moodle} is a very popular platform. It was created in 2002 by Martin Dougiamas,
+	an educator from Australia. Nowadays, it has more than 160000 sites in no less than 240 countries. Moodle
+	provides a wide range of features, including course management, assessments, collaboration tools, and more.
+	It	is extensible with plugins.
 
-	\item \textbf{Open edX}~\cite{openedx} is an open-source platform for delivering massive open online courses created by edX, a non-profit organization founded by Harvard and MIT. One of the key features is its modular architecture, which allows for easy customization and extension. It has a large and active community of developers and users who contribute to the platform's development and support, enhancing its overall functionality.
+	\newpage
+	
+	\item \textbf{Open edX}~\cite{openedx} is an open-source platform for delivering massive open online
+	courses created by edX, a non-profit organization founded by Harvard and MIT. One of the key features is
+	its modular architecture, which allows for easy customization and extension. It has a large and active
+	community of developers and users who contribute to the platform's development and support, enhancing
+	its overall functionality.
 
-	\item \textbf{Canvas}~\cite{canvas} is a platform that includes features such as course management, assignments, quizzes, and discussions, as well as integration with other tools such as Google Drive, Zoom, and Microsoft Office. Canvas is written in Ruby programming language. Ruby is unavailable on the current hosting~\cite{forpsi_data}.
+	\item \textbf{Canvas}~\cite{canvas} is a platform that includes features such as course management,
+	assignments, quizzes, and discussions, as well as integration with other tools such as Google Drive, Zoom,
+	and Microsoft Office. Canvas is written in Ruby programming language. Ruby is unavailable on the current
+	hosting~\cite{forpsi_data}.
 
-	\item \textbf{Omeka}~\cite{omeka} is specifically designed for creating and managing digital collections and exhibits. It includes features such as customizable themes, metadata management, and access control to create a flexible and organized environment for digital content.
-
-	\item \textbf{MediaWiki}~\cite{mediawiki} is used by many organizations to create and manage wikis. It includes features such as page editing, version history, and access control that help create a collaborative and organized environment for content management. While it could be used for the application, there are better choices for material management.
+	\item \textbf{Omeka}~\cite{omeka} is specifically designed for creating and managing digital collections and
+	exhibits. It includes features such as customizable themes, metadata management, and access control to
+	create a flexible and organized environment for digital content. It is a CMS.
 
 \end{itemize}
+
+\subsection{Final verdict on the systems}
+
+All of the systems fullfil their given roles, and they do it very well. However, they all mostly share the same
+fault, aiming for a different objective. What is needed for the project is a system tha can manage different
+resources, but not in a form of whole courses. A course is difficult to prepare, and many of the materials
+that the ENAI wants to gather are not only used for learning, but for teaching too, and a teacher usually
+does not use an online course as a teaching tool during one of his classes.
+
+The general CMS are denied too. One of those systems has already been tried on the server. The original
+plugin broke as a result of one of the WordPress updates, which caused many issues. As such, the overhead
+and possible incompatibilities those systems introduce when their plugins or applications are not under
+active maintenance solidified their denial.
 
 \section{MVC}
 \label{sect:mvc}
 
-The Model-View-Controller (MVC) pattern is a popular design pattern used in web development. Its main idea is to separate the application into three interconnected components: the Model, the View, and the Controller. The MVC pattern's primary benefit is promoting the division of responsibilities and modularity. By splitting the application into distinct components, each meant for a specific set of tasks, developers can focus on one component at a time. Changes to that component do not necessarily affect the other components. This makes it easier to maintain and update the application over time.
+The Model-View-Controller (MVC) pattern is a popular design pattern used in web
+development. Its main idea is to separate the application into three interconnected
+components: the Model, the View, and the Controller. The MVC pattern's primary
+benefit is promoting the division of responsibilities and modularity. By splitting the
+application into distinct components, each meant for a specific set of tasks, developers
+can focus on one component at a time. Changes to that component do not necessarily
+affect the other components. This makes it easier to maintain and update the
+application over time.
 
-"The Model is the part of the system that manages all tasks related to data: validation, session state and control, data source structure. The Model greatly reduces the complexity of the code the developer needs to write."~\cite{gilmore09}. The Model represents the application's data and business logic, defining how data is stored, manipulated, and retrieved. It provides all methods for interacting with the data and is responsible for maintaining their consistency and integrity.
+"The Model is the part of the system that manages all tasks related to data: validation,
+session state and control, data source structure. The Model greatly reduces the
+complexity of the code the developer needs to write."~\cite{gilmore09}. The Model
+represents the application's data and business logic, defining how data is stored,
+manipulated, and retrieved. It provides all methods for interacting with the data and
+is responsible for maintaining their consistency and integrity.
 
-The View component represents the user interface and may be thought of as a front-end of the application. It is responsible for presenting data to the user in a visually appealing and understandable way and allowing interactions between the user and the application. "By separating the design of the application from the logic of the application we greatly reduce the risk of errors showing up when the designer decides to alter the interface of that application by changing a logo or a table"~\cite{gilmore09}.
+The View component represents the user interface and may be thought of as a front-end
+of the application. It is responsible for presenting data to the user in a visually appealing
+and understandable way and allowing interactions between the user and the application.
+"By separating the design of the application from the logic of the application we greatly
+reduce the risk of errors showing up when the designer decides to alter the interface of
+that application by changing a logo or a table"~\cite{gilmore09}.
 
-The Controller component acts as an intermediary between the Model and the View. "A controller accepts requests and prepares the data for a response. It is also responsible with establishing the format of that response. The Controller interacts with the Model in order to retrieve the needed data and generates the View"~\cite{gilmore09}. A controller may verify or transform the user inputs before passing them to the Model and generating a response.
+The Controller component acts as an intermediary between the Model and the View.
+"A controller accepts requests and prepares the data for a response. It is also responsible
+with establishing the format of that response. The Controller interacts with the Model in
+order to retrieve the needed data and generates the View"~\cite{gilmore09}. A controller
+may verify or transform the user inputs before passing them to the Model and generating
+a response.
 
 \chapter{Analysis and Design}
 \label{chap:analysis}
 
-The first part looks at the plugin. The second discusses the requirements for the new implementation. After requirements come the use cases, data modeling, and UX design.
+The first part looks at the existing plugin. The second discusses the requirements for the new
+implementation. After requirements come the use cases, data modeling, and UX design.
 
 \section{Plugin}
 \label{sect:plugin}
 
-The plugin that has been mentioned several times already is an extension of the WordPress content management system. The extension serves as an interface between a user and the servers' filesystem and database. It provides teaching and learning support for various topics on academic integrity. It has seen widespread use since its release, containing over 250 different materials. Those materials must be preserved during the transfer to the new implementation. It is essential to determine the plugins' content and data structure to achieve this. The following analysis is to fulfill this purpose and, moreover, review the possibility of using the code of the plugin instead as a base instead of starting from scratch. To get more information about the plugin, see the thesis written by the plugin creator~\cite{lang18}.
+The plugin that has been mentioned several times already is an extension of the WordPress
+content management system. The extension serves as an interface between a user and the
+servers' filesystem and database. It provides teaching and learning support for various topics
+on academic integrity. It has seen widespread use since its release, containing over 250
+different materials. Those materials must be preserved during the transfer to the new
+implementation. It is essential to determine the plugins' content and data structure to achieve
+this. The following analysis is to fulfill this purpose and, moreover, review the possibility of using
+the code of the plugin instead as a base instead of starting from scratch. To get more information
+about the plugin, see the thesis written by the plugin creator~\cite{lang18}.
 
-After the analysis, it was clear that putting the original code to use would prove more difficult than starting from zero~\ref{subsect:plugin-structure}. The application is still meant to be a replacement, so the existing user interface and data need to be taken into account while discovering the requirements. 
+After the analysis, it was clear that putting the original code to use would prove more difficult
+than starting from zero~\cref{subsect:plugin-structure}. The application is still meant to be
+a replacement, so the existing user interface and data need to be taken into account while
+discovering the requirements. 
 
 \subsection{User interface}
 \label{subsect:plugin-ui}
 
-The first step in analyzing the plugin is to familiarize ourselves with the user interface, making the next steps easier to grasp by understanding the context. Its graphical design is quite plain, which is in no way a bad thing. Many websites are suffering from overdesign, and the plainness makes the plugin look clean and easy to navigate in comparison.
+The first step in analyzing the plugin is to familiarize ourselves with the user interface,
+making the next steps easier to grasp by understanding the context. Its graphical design
+is quite plain, which is in no way a bad thing. Many websites are suffering from overdesign,
+and the plainness makes the plugin look clean and easy to navigate in comparison.
 
-The plugin inherits the same navigation page as its parent site. This feature cannot be a part of the new implementation as it aims to be a separate software. The plugin adds several viewable pages: \begin{itemize}
-	\item \textbf{Material details} - shows all data of a single material. This includes connected data such as relations or files.
-	\item \textbf{Multiple materials} - the materials displayed in a list. This list is paged and can be filtered by both the search bar and filters. Every material shows its title, thumbnail, publish date, rating, short description, and views. 
-	\item \textbf{Materials table} - under restricted access. It shows all materials in a paged table. The table supports bulk operations but lacks adequate support for searching, filtering, and sorting.
-	\item \textbf{Material editor} - under restricted access. It is used for editing or the creation of a single material and contains input fields for materials title, sender, type, and content. Additionally, it allows the assignment of taxonomies, thumbnail, files, or a single link. Relations can be added manually. All of the additional features are hard to operate, requiring a high amount of scrolling and clicking. For example, the thumbnail is at the bottom right side of the editor and not easily accessible. The same goes for taxonomies. Files must be uploaded to the shared servers directory, and only then can they be added to the material, which is an arduous process.
-	\item \textbf{Configuration} - under restricted access. Used for setting the theme and basic settings like the number of shown items per page.
+The plugin inherits the same navigation page as its parent site. This feature cannot be a part
+of the new implementation as it aims to be a separate software. The plugin adds several 
+viewable pages:
+
+\begin{itemize}
+	\item \textbf{Material details} - shows all data of a single material. This includes connected
+	data such as relations or files.
+	\item \textbf{Multiple materials} - the materials displayed in a list. This list is paged and can
+	be filtered by both the search bar and filters. Every material shows its title, thumbnail, publish
+	date, rating, short description, and views. 
+	\item \textbf{Materials table} - under restricted access. It shows all materials in a paged table.
+	The table supports bulk operations but lacks adequate support for searching, filtering, and sorting.
+	\item \textbf{Material editor} - under restricted access. It is used for editing or the creation or
+	a single material and contains input fields for materials title, sender, type, and content. Additionally,
+	it allows the assignment of taxonomies, thumbnail, files, or a single link. Relations can be added
+	manually. All of the additional features are hard to operate, requiring a high amount of scrolling
+	and clicking. For example, the thumbnail is at the bottom right side of the editor and not easily
+	accessible. The same goes for taxonomies. Files must be uploaded to the shared servers directory,
+	and only then can they be added to the material, which is an arduous process.
+	\item \textbf{Configuration} - under restricted access. Used for setting the theme and basic
+	settings like the number of shown items per page.
 \end{itemize}
 
-Taxonomies can be managed anywhere in the plugins' administration area. It should be noted that the materials cannot have multiple external sites linked unless added directly to the content. Material cannot have both an external link and files, always only one of the two. The search bar includes suggestions, but they are not very responsive.
+Taxonomies can be managed anywhere in the plugins' administration area. It should be noted
+that the materials cannot have multiple external sites linked unless added directly to the content.
+Material cannot have both an external link and files, always only one of the two. The search bar
+includes suggestions, but they are not very responsive.
 
-There are several things that could be improved with support for mobile devices. Most of the buttons appear often appear out of place. The filters use a different layout from the PC version, are broken, and cannot be closed after they were opened. Many of the filters often belong to a single category, and since there is no support for taxonomy hierarchies, it creates large lists that are hard to use.
+There are several things that could be improved with support for mobile devices. Most of the
+buttons appear often appear out of place. The filters use a different layout from the PC version,
+are broken, and cannot be closed after they were opened. Many of the filters often belong to
+a single category, and since there is no support for taxonomy hierarchies, it creates large lists that
+are hard to use.
 
 \subsection{Structure}
 \label{subsect:plugin-structure}
@@ -368,9 +491,16 @@ At a glance, the plugin seems straightforward. It does not use the WordPress MVC
 	\item \textit{uninstall.php} - not implemented
 \end{itemize}
 
-The plugin uses a range of custom data types and implements their related functionalities by itself. The code is poorly documented outside of the mentioned thesis~\cite{lang18}. The whole implementation depends heavily on WordPress and its application interface. It supports older versions of PHP with guaranteed support for version 5. This directly translates to incompatibilities with newer versions. It is not actively maintained, causing additional incompatibilities with WordPress, too. Both the high dependency and incompatibilities pitched a decision to drop the plugin's code altogether, using only its analysis. With this, the database can finally be looked at.
+The plugin uses a range of custom data types and implements their related functionalities by itself.
+The code is poorly documented outside of the mentioned thesis~\cite{lang18}. The whole
+implementation depends heavily on WordPress and its application interface. It supports older
+versions of PHP with guaranteed support for version 5. This directly translates to incompatibilities
+with newer versions. It is not actively maintained, causing additional incompatibilities with
+WordPress, too. Both the high dependency and incompatibilities pitched a decision to drop the
+plugin's code altogether, using only its analysis. With this, the database can finally be looked at.
 
-Since the plugin works as an educational database, it must handle educational materials. The materials can be decomposed into the following properties: \begin{itemize}
+Since the plugin works as an educational database, it must handle educational materials. The
+materials can be decomposed into the following properties: \begin{itemize}
 	\item \textit{Title} - the name of the material.
 	\item \textit{Sender} - the name of the person who sent or created the material.
 	\item \textit{Date} - of when the material was published.
@@ -378,23 +508,38 @@ Since the plugin works as an educational database, it must handle educational ma
 	\item \textit{Tags} - categories and other metadata.
 	\item \textit{Comments} - provided by users to receive feedback on materials.
 	\item \textit{Rating} - provided by users to favor quality materials.
-	\item \textit{Content} - can be a description of provided attachments or a complete learning experience.
+	\item \textit{Content} - can be a description of provided attachments or a complete
+	learning experience.
 	\item \textit{Attachments} - link to a website or files on the server.
 \end{itemize}
 
-Sender as an attribute has only ever been used during the materials' creation, never shown otherwise, and can be removed. While shown, the type has never seen much use and should be merged into tags.
+Sender as an attribute has only ever been used during the materials' creation, never shown
+otherwise, and can be removed. While shown, the type has never seen much use and should be
+merged into tags.
 
-Tags are a central part of the application. They are also known as taxonomies. While the data structure allows hierarchization, the front-end never implemented it. Due to that, they are ordered in a category-to-value relationship. Over the years, many tags accumulated, categories started overflowing, and their refinement is long overdue.
+Tags are a central part of the application. They are also known as taxonomies. While the data
+structure allows hierarchization, the front-end never implemented it. Due to that, they are ordered in
+a category-to-value relationship. Over the years, many tags accumulated, categories started
+overflowing, and their refinement is long overdue.
 
-The rating was originally a part of the comment system, where each comment could contain a rating of one through five. Many malicious users took advantage of the comments to spread spam and advertisement messages, and the comments were disabled. The rating should be a separate function in the new version, with comments never returning.
+The rating was originally a part of the comment system, where each comment could contain a rating
+of one through five. Many malicious users took advantage of the comments to spread spam and
+advertisement messages, and the comments were disabled. The rating should be a separate function
+in the new version, with comments never returning.
 
-The attachments could either be links or files. Files were saved into folders based on the year and month of their upload. This should be changed into a model where every attachment belongs directly to the material as per the administrator's request.
+The attachments could either be links or files. Files were saved into folders based on the year and
+month of their upload. This should be changed into a model where every attachment belongs directly
+to the material as per the administrator's request.
+
+\newpage
 
 \section{Requirements}
 
 \subsection{Functional requirements}
 
-Based on the analysis of the plugin and discussions with the ENAI personnel, new functional requirements were stated. Those requirements represent a set of functionalities the application must provide its users.
+Based on the analysis of the plugin and discussions with the ENAI personnel, new functional
+requirements were stated. Those requirements represent a set of functionalities the application
+must provide its users.
 
 \begin{itemize}
     \item creation and management of materials, resources, tags
@@ -409,7 +554,9 @@ Based on the analysis of the plugin and discussions with the ENAI personnel, new
 
 \subsection{Non-functional requirements}
 
-Non-functional requirements represent a set of conditions that the application needs to be aware of since they can limit its operation by disallowing the use of some technologies or imposing that specific metrics such as quality of delivery be met.
+Non-functional requirements represent a set of conditions that the application needs to be aware of
+since they can limit its operation by disallowing the use of some technologies or imposing that
+specific metrics such as quality of delivery be met.
 
 \begin{itemize}
 	\item application must be compatible with Forpsi server~\cite{forpsi_data}
@@ -418,11 +565,20 @@ Non-functional requirements represent a set of conditions that the application n
 	\item internet connection and web browser
 \end{itemize}
 
-The application should be mobile-centric. It should be designed for mobile users first and only after that for computers or other devices with larger screen sizes. There should be a high level of focus on the design of a user-friendly interface. Each action should be well understood and simple to do. This requirement is weighed more in the management section in this case.
+The application should be mobile-centric. It should be designed for mobile users first and only after
+that for computers or other devices with larger screen sizes. There should be a high level of focus on
+the design of a user-friendly interface. Each action should be well understood and simple to do. This
+requirement is weighed more in the management section in this case.
 
 \section{Use case diagram}
 
-The use case diagram is a behavioral diagram from Unified Modeling Language (UML). It is a graphical representation of the relations between the users and their requirements on the system. A use case diagram highlights the system's functionality from the point of view of one or many users. The user is not necessarily a physical person and is generally called an actor. The diagram differentiates between the actors' roles, even if the actor is only one user in reality. Roles can be grouped into role hierarchies, in which the children inherit the use cases from their parents. A use case diagram is often used to aid in stating the systems' design goals and communicating those intentions to clients.
+The use case diagram is a behavioral diagram from Unified Modeling Language (UML). It is a graphical
+representation of the relations between the users and their requirements on the system. A use case
+diagram highlights the system's functionality from the point of view of one or many users. The user is
+not necessarily a physical person and is generally called an actor. The diagram differentiates between
+the actors' roles, even if the actor is only one user in reality. Roles can be grouped into role
+hierarchies, in which the children inherit the use cases from their parents. A use case diagram is often
+used to aid in stating the systems' design goals and communicating those intentions to clients.
 
 \begin{figure}
 	\begin{center}
@@ -434,19 +590,52 @@ The use case diagram is a behavioral diagram from Unified Modeling Language (UML
 	\label{fig:use-case}
 \end{figure}
 
-As seen on the diagram~\ref{fig:use-case}, the application requires a two-level design approach: the presentation and management layers.
+As seen on the diagram~\imgref{use-case}, the application requires a two-level design approach: the
+presentation and management layers.
 
-The presentation layer, also called the public layer, is accessible to anyone. Its primary responsibility is the presentation of saved materials to anyone visiting the website. In this case, there are two different functionalities. The first is a view of multiple materials, and the second is a view of a single material in greater detail. In the first case, the materials should be searchable by their titles and, at the same time, filterable by their assigned tags. Every user should be able to view the top-performing materials. The details must contain full-length content with various attachments, be it links that can be visited or files that can be downloaded, and an interactive material rating.
+The presentation layer, also called the public layer, is accessible to anyone. Its primary responsibility is
+the presentation of saved materials to anyone visiting the website. In this case, there are two
+different functionalities. The first is a view of multiple materials, and the second is a view of a single
+material in greater detail. In the first case, the materials should be searchable by their titles and, at
+the same time, filterable by their assigned tags. Every user should be able to view the top-performing
+materials. The details must contain full-length content with various attachments, be it links that can
+be visited or files that can be downloaded, and an interactive material rating.
 
-The management layer is the core functionality of the application. It should be restricted by an authentication process that every user needs to pass before being granted access. This should protect the vulnerable database from malicious actors. This process is depicted by \textit{Login} action of any user~\ref{fig:use-case}. Logged-in users can log out if they desire to do so. Any user should be able to reset his own password.
+The management layer is the core functionality of the application. It should be restricted by an
+authentication process that every user needs to pass before being granted access. This should
+protect the vulnerable database from malicious actors. This process is depicted by \textit{Login}
+action of any user~\imgref{use-case}. Logged-in users can log out if they desire to do so. Any user
+should be able to reset his own password.
 
-After logging in, the administrator must be able to see usage statistics and manage the database. Database management includes the creation, modification, and removal of all relevant data entities. Tags should be protected from unwanted removal if they are in use. Resources should be fully managed by the editor that handles the materials, with the only exception being unused files. Unused files are files that were assigned to some material, lived in it for some time, and then were either replaced or removed. All the data assignable to a material can be created during its creation, simplifying the work significantly by removing the need for repeated operations. Administrators should be able to create new administrators. Any administrator should be able to change the application's home reference and the reference to the About page. Each material uses a shared default image as a thumbnail in case of having none, and this default image should also be configurable. This configured image should always be reversible to the default one.
+After logging in, the administrator must be able to see usage statistics and manage the database.
+Database management includes the creation, modification, and removal of all relevant data entities.
+Tags should be protected from unwanted removal if they are in use. Resources should be fully
+managed by the editor that handles the materials, with the only exception being unused files. Unused
+files are files that were assigned to some material, lived in it for some time, and then were either
+replaced or removed. All the data assignable to a material can be created during its creation,
+simplifying the work significantly by removing the need for repeated operations. Administrators
+should be able to create new administrators. Any administrator should be able to change the
+application's home reference and the reference to the About page. Each material uses a shared
+default image as a thumbnail in case of having none, and this default image should also be
+configurable. This configured image should always be reversible to the default one.
 
 \section{Data modelling with ERD}
 
-An Entity-Relationship Diagram (ERD) is a graphical representation of data entities and their relationships. It is commonly used to model the system's data structure when designing databases. An ERD consists of entities, entity attributes, and relationships. Every entity represents a single data object in the system. Sometimes there is a need to connect two entities in a many-to-many relationship, which is impossible in a typical database. An additional connector is required to separate this relation into a many-to-one one-to-many relation. ERD does not have a limit on the number of data entities. However, it is good practice to try and keep them at a minimum. Each entity can have multiple attributes. An attribute is a representation of a value of a column for a given instance of an entity. Each attribute can have constraints imposed upon it, such as a primary key or foreign key constraint.
+An Entity-Relationship Diagram (ERD) is a graphical representation of data entities and their
+relationships. It is commonly used to model the system's data structure when designing databases.
+An ERD consists of entities, entity attributes, and relationships. Every entity represents a single data
+object in the system. Sometimes there is a need to connect two entities in a many-to-many
+relationship, which is impossible in a typical database. An additional connector is required to separate
+this relation into a many-to-one one-to-many relation. ERD does not have a limit on the number of
+data entities. However, it is good practice to try and keep them at a minimum. Each entity can have
+multiple attributes. An attribute is a representation of a value of a column for a given instance of an
+entity. Each attribute can have constraints imposed upon it, such as a primary key or foreign key
+constraint.
 
-The new implementation will be a standalone project and does not need to conform to WordPresses' guidelines anymore. The only limiting factor is the requirement of compatibility with a MySQL database driver. The final schema will be different from the plugins' original. The ERD~\ref{fig:erd} displays ten separate entities.
+The new implementation will be a standalone project and does not need to conform to WordPresses'
+guidelines anymore. The only limiting factor is the requirement of compatibility with a MySQL
+database driver. The final schema will be different from the plugins' original. The ERD~\imgref{erd}
+displays ten separate entities.
 
 \begin{figure}
 	\begin{center}
@@ -458,31 +647,67 @@ The new implementation will be a standalone project and does not need to conform
 	\label{fig:erd}
 \end{figure}
 
-Two of the entities serve as support for the application and do not have any relations. The \textit{migrations} entity is added in case a database migration is needed. It holds information about successful migrations and enables their rollbacking whenever defined. The \textit{config} handles the storage and distribution of settings configurable by administrators, like the replacement of the aforementioned default image.
+Two of the entities serve as support for the application and do not have any relations. The
+\textit{migrations} entity is added in case a database migration is needed. It holds information about
+successful migrations and enables their rollbacking whenever defined. The \textit{config} handles the
+storage and distribution of settings configurable by administrators, like the replacement of the
+aforementioned default image.
 
 The following entities store the application data.
 
-Materials are saved into \textit{materials}. Several redundant columns are added to them to reduce loading times and allow for easier sorting later in the implementation. The redundant columns are \textit{material\_views}, \textit{material\_rating} and \textit{material\_rating\_count}. Each can be computed by aggregating their relative tables, but aggregation is costly and can mostly be done on update instead of select. We can presume that selection is a much more frequent operation.
+Materials are saved into \textit{materials}. Several redundant columns are added to them to reduce
+loading times and allow for easier sorting later in the implementation. The redundant columns are
+\textit{material\_views}, \textit{material\_rating} and \textit{material\_rating\_count}. Each can be
+computed by aggregating their relative tables, but aggregation is costly and can mostly be done on
+update instead of select. We can presume that selection is a much more frequent operation.
 
-Initially called taxonomies, tags are stored in a \textit{properties}. Tags will also be called properties in the implementation. Properties can be part of property hierarchies, forming tree-like structures where \textit{property\_tag} acts as a parent of the property. An additional connector table is required to assign properties to materials without duplication.
+Initially called taxonomies, tags are stored in a \textit{properties}. Tags will also be called properties
+in the implementation. Properties can be part of property hierarchies, forming tree-like structures
+where \textit{property\_tag} acts as a parent of the property. An additional connector table is
+required to assign properties to materials without duplication.
 
-Most of the original metadata is contained in \textit{resources} and connected to materials by a connector entity. Resources include URLs, downloadable files, and thumbnails. Paths are stored relative to the root folder of the application. Links have the entire value saved.
+Most of the original metadata is contained in \textit{resources} and connected to materials by a
+connector entity. Resources include URLs, downloadable files, and thumbnails. Paths are stored
+relative to the root folder of the application. Links have the entire value saved.
 
-Related materials are kept inside of \textit{material\_material} entity, where each row forms a bi-directional relation. Material can be related to an unlimited amount of other materials, but not to self.
+Related materials are kept inside of \textit{material\_material} entity, where each row forms a bi
+directional relation. Material can be related to an unlimited amount of other materials, but not to
+self.
 
-Each material can be rated, and the ratings are saved in \textit{ratings}. Each row holds a rating of a material given by a single user, with the average computed and saved into the material.
+Each material can be rated, and the ratings are saved in \textit{ratings}. Each row holds a rating of a
+material given by a single user, with the average computed and saved into the material.
 
-The difference in the database proved hard to overcome when importing the original database to the new implementation. It was deemed to be about the same work as manual upload, which was done instead and served as the first real test of the system.
+The difference in the database proved hard to overcome when importing the original database to the
+new implementation. It was deemed to be about the same work as manual upload, which was done
+instead and served as the first real test of the system.
 
 \section{UX Design}
 
-"User Experience (UX) design is the act and art of crafting the interface and interactions for a website or application~\cite{hamm14}." Wireframing is just one of its parts. It produces conceivable layouts of what the final product could look like. Wireframes are usually bare, composed only of boxes, triangles, and other simple shapes, but they still give the art direction. UX design is usually prefaced with in-depth research of the target audience along with the discovery of requirements, consideration of limitations of technologies, and, in the case of redesigning an application, the question of what is hampering the users.
+"User Experience (UX) design is the act and art of crafting the interface and interactions for a website
+or application~\cite{hamm14}." Wireframing is just one of its parts. It produces conceivable layouts of
+what the final product could look like. Wireframes are usually bare, composed only of boxes,
+triangles, and other simple shapes, but they still give the art direction. UX design is usually prefaced
+with in-depth research of the target audience along with the discovery of requirements,
+consideration of limitations of technologies, and, in the case of redesigning an application, the
+question of what is hampering the users.
 
-In the case of the original, most of the complaints came from the administrators, but the publicly available view had its share of problems too. From the thesis~\cite{lang18} it can be seen that the design and wireframing were done with larger screens in mind. In the past few years, the use of mobile devices grew exponentially, with now over 58\,\% of worldwide internet traffic being mobile devices~\cite{mobile_usage}. The specific issues are elaborated upon in the plugin analysis section~\ref{sect:plugin}.
+In the case of the original, most of the complaints came from the administrators, but the publicly
+available view had its share of problems too. From the thesis~\cite{lang18} it can be seen that the
+design and wireframing were done with larger screens in mind. In the past few years, the use of
+mobile devices grew exponentially, with now over 58\,\% of worldwide internet traffic being mobile
+devices~\cite{mobile_usage}. The specific issues are elaborated upon in the plugin analysis
+section~\cref{sect:plugin}.
 
 \subsection{Wireframes}
 
-The first and foremost decision was on the layout of the filters. Filters are one of the most used parts of the application, present in both the public and administration layers. The layout needs to support the nesting of properties. The implemented design~\ref{fig:filters} needs to be very flexible. Each \textit{property} that has children can be closed. Every property can be selected, so checkboxes have been added. If the checkbox is checked and the item has children, the children should disappear. In some cases, one category contained many values, so a \textit{show more/less} button is added to further reduce the displayed item count. A similar layout is used inside material details but with no checkboxes.
+The first and foremost decision was on the layout of the filters. Filters are one of the most used parts
+of the application, present in both the public and administration layers. The layout needs to support
+the nesting of properties. The implemented design~\imgref{filters} needs to be very flexible. Each
+\textit{property} that has children can be closed. Every property can be selected, so checkboxes have
+been added. If the checkbox is checked and the item has children, the children should disappear. In
+some cases, one category contained many values, so a \textit{show more/less} button is added to
+further reduce the displayed item count. A similar layout is used inside material details but with no
+checkboxes.
 
 \begin{figure}[!htbp]
 	\begin{center}
@@ -497,7 +722,11 @@ The first and foremost decision was on the layout of the filters. Filters are on
 	\label{fig:filters}
 \end{figure}
 
-Another step was the creation of a materials' card~\ref{fig:mat-card-mobile}. The card is an overview of the materials' information and should be used when displaying multiple materials on one page. It shows a thumbnail at the top, followed by the title of the material, and then other details, the most important being the rating. The whole card should indicate that it is clickable. On a larger screen, the card is more horizontal than vertical but shows the same data~\ref{fig:mat-card-pc}.
+Another step was the creation of a materials' card~\imgref{mat-card-mobile}. The card is an overview
+of the materials' information and should be used when displaying multiple materials on one page. It
+shows a thumbnail at the top, followed by the title of the material, and then other details, the most
+important being the rating. The whole card should indicate that it is clickable. On a larger screen, the
+card is more horizontal than vertical but shows the same data~\imgref{mat-card-pc}.
 
 \begin{figure}[!htbp]
 	\begin{center}
@@ -509,7 +738,7 @@ Another step was the creation of a materials' card~\ref{fig:mat-card-mobile}. Th
 	\label{fig:mat-card-mobile}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[!htbp]
 	\begin{center}
 		\begin{minipage}{1\textwidth}
 			\includegraphics[width=\textwidth]{pictures/material_pc.png}
@@ -519,19 +748,24 @@ Another step was the creation of a materials' card~\ref{fig:mat-card-mobile}. Th
 	\label{fig:mat-card-pc}
 \end{figure}
 
-With those two components, the public page can be designed. The mobile version~\ref{fig:page-mobile} is stacked in one column. On top of the page, a navigation bar is present. The navigation bar is toggleable if the links do not fit, showing them on separate rows (3). Under navigation, a page title is added. The filters can be toggled between hidden and shown, freeing scrolling space. A search bar is added to add the ability to search for materials. The only item left is the cards, which can be paged.
+With those two components, the public page can be designed. The mobile
+version~\imgref{page-mobile} is stacked in one column. On top of the page, a navigation bar is
+present. The navigation bar is toggleable if the links do not fit, showing them on separate rows (3).
+Under navigation, a page title is added. The filters can be toggled between hidden and shown, freeing
+scrolling space. A search bar is added to add the ability to search for materials. The only item left is the
+cards, which can be paged.
 
 \begin{figure}[!htbp]
 	\begin{center}
-		\begin{minipage}{.3\textwidth}
+		\begin{minipage}{.25\textwidth}
 			\includegraphics[width=\textwidth]{pictures/page_mobile1.png}
 		\end{minipage}
 		\hfill
-		\begin{minipage}{.3\textwidth}
+		\begin{minipage}{.25\textwidth}
 			\includegraphics[width=\textwidth]{pictures/page_mobile2.png}
 		\end{minipage}
 		\hfill
-		\begin{minipage}{.3\textwidth}
+		\begin{minipage}{.25\textwidth}
 			\includegraphics[width=\textwidth]{pictures/page_mobile3.png}
 		\end{minipage}
 	\end{center}
@@ -539,9 +773,7 @@ With those two components, the public page can be designed. The mobile version~\
 	\label{fig:page-mobile}
 \end{figure}
 
-The computer version uses a two-column layout~\ref{fig:page-pc}, with one being a much smaller sidebar where the filters are placed. The rest is similar to the mobile version, only using the space more freely and missing the ability to hide all the filters completely. The navigation bar should fit all links without the need for toggling, too.
-
-\begin{figure}
+\begin{figure}[!htpb]
 	\begin{center}
 		\begin{minipage}{.9\textwidth}
 			\includegraphics[width=\textwidth]{pictures/page_pc.png}
@@ -551,84 +783,183 @@ The computer version uses a two-column layout~\ref{fig:page-pc}, with one being 
 	\label{fig:page-pc}
 \end{figure}
 
-The material details use the same layout as the public page~\ref{fig:page-pc}. The only significant difference is the header. The header contains the information seen on cards, except the description of the material. The thumbnail prefers being on the left side, switching to full width on mobile. The go-back button should be present to allow an intuitive return to the all materials page. Content, attachments, and other features are placed in a column below the header.
+The computer version uses a two-column layout \imgref{page-pc}, with one being a much smaller
+sidebar where the filters are placed. The rest is similar to the mobile version, only using the space
+more freely and missing the ability to hide all the filters completely. The navigation bar should fit all
+links without the need for toggling, too.
 
-No additional wireframes were made because the administration follows the same design guidelines. The main differences are that administration cards contain additional information, such as ids of materials, date of last update, or current status. They also include clickable buttons enabling editing and deletion. Other design details were decided upon during the implementation.
+The material details use the same layout as the public page \imgref{page-pc}. The only significant
+difference is the header. The header contains the information seen on cards, except the description of
+the material. The thumbnail prefers being on the left side, switching to full width on mobile. The go
+back button should be present to allow an intuitive return to the all materials page. Content,
+attachments, and other features are placed in a column below the header.
+
+No additional wireframes were made because the administration follows the same design guidelines.
+The main differences are that administration cards contain additional information, such as ids of
+materials, date of last update, or current status. They also include clickable buttons enabling editing
+and deletion. Other design details were decided upon during the implementation.
 
 \chapter{Implementation}
 
-On the client's side, the application uses HTML to present the views and CSS to style them. The CSS was not written directly but compiled from SCSS. To add interactivity to the application, JavaScript was either embedded directly into the HTML files or loaded independently. The applications' server side is written entirely in PHP. To help with the implementation, a PHP framework CodeIgniter4 was used~\ref{sect:codeigniter}.
+On the client's side, the application uses HTML to present the views and CSS to style them. The CSS
+was not written directly but compiled from SCSS. To add interactivity to the application, JavaScript
+was either embedded directly into the HTML files or loaded independently. The applications' server
+side is written entirely in PHP. To help with the implementation, a PHP framework CodeIgniter4 was
+used~\cref{sect:codeigniter}.
 
-The application was developed on a local development server with the assistance of Laragon. Laragon is a Windows application that can run an Apache server with a MySQL database. The development server had been set up to match the deployment server as closely as possible.
+The application was developed on a local development server with the assistance of Laragon. Laragon
+is a Windows application that can run an Apache server with a MySQL database. The development
+server had been set up to match the deployment server as closely as possible.
 
-A versioning tool, git, was used to improve the development workflow. A GitLab repository on the FI domain was used for development, but the final product resides on GitHub with revised commit history.
+A versioning tool, git, was used to improve the development workflow. A GitLab repository on the FI
+domain was used for development, but the final product resides on GitHub with revised commit
+history.
 
-The editor of choice has been Visual Studio Code. Visual Studio Code is a powerful code editor with easy and quick extendability through extensions. It integrates the git directly into the editor. Added extensions were used to provide syntax highlights, code suggestions, SCSS compilation, and error lensing.
+The editor of choice has been Visual Studio Code. Visual Studio Code is a powerful code editor with
+easy and quick extendability through extensions. It integrates the git directly into the editor. Added
+extensions were used to provide syntax highlights, code suggestions, SCSS compilation, and error
+lensing.
 
-The implementation is described by way of looking at separate use cases. Every section that follows the authentication ~\ref{sect:authentication} belongs to the protected part of the application. 
+The implementation is described by way of looking at separate use cases. Every section that follows
+the authentication ~\cref{sect:authentication} belongs to the protected part of the application. 
 
 \section{CodeIgniter4}
 \label{sect:codeigniter}
 
-CodeIgniter is an Application Development Framework - a toolkit - for people who build websites using PHP~\cite{codeigniter}. It is a small framework that aims to offer exceptional performance. It is aimed at development under the MVC pattern but does not enforce it. The framework can have its core parts easily extended or completely replaced to make the system work as needed. In short, CodeIgniter is a malleable framework that provides the tools needed while staying out of the way. It does not require the use of the command line, making all the features available immediately with almost no additional setup. It is well documented~\cite{codeigniter4}, has a sizable community, and is actively maintained. At the time of development, the latest release version and the version the application is implemented in was CodeIgniter4. 
+CodeIgniter is an Application Development Framework - a toolkit - for people who build websites
+using PHP~\cite{codeigniter}. It is a small framework that claims to offer great performance. It is
+aimed at development under the MVC pattern but does not enforce it. The framework can have its
+core parts easily extended or completely replaced to make the system work as needed. In short,
+CodeIgniter is a malleable framework that provides the tools needed while staying out of the way. It
+does not require the use of the command line, making all the features available immediately with
+almost no additional setup. It is well documented~\cite{codeigniter4}, has a sizable community, and is
+actively maintained. At the time of development, the latest release version and the version the
+application is implemented in was CodeIgniter4. 
 
-Several other frameworks were considered before deciding on CodeIgniter, more specifically Laravel and Symfony. Both of them are popular and excellent choices. Feature-wise, the most complete framework out of the three is Laravel. However, not by far, and as this was my first PHP project, the easiest-to-learn framework was selected. CodeIgniters' documentation was also the personally most readable.
+Several other frameworks were considered before deciding on CodeIgniter, more specifically Laravel
+and Symfony. Both of them are popular and excellent choices. Feature-wise, the most complete
+framework out of the three is Laravel. However, not by far, and as this was my first PHP project, the
+easiest-to-learn framework was selected. CodeIgniters' documentation was also the personally most
+readable.
 
-Codeigniter4 is prepared for development beneath the MVC pattern. Due to this, the project's structure is separated into three distinct components~\ref{sect:mvc}. The majority of the code lives inside the \textit{App} directory:
+Codeigniter4 is prepared for development beneath the MVC pattern. Due to this, the project's
+structure is separated into three distinct components~\cref{sect:mvc}. The majority of the code lives
+inside the \textit{App} directory:
 
 \begin{itemize}
 	\item Config - all files that configure the core application's behavior.
 	\item Controllers - files serving as controllers from MVC.
 	\item Database - contains database migrations and seeding. Seeding was not used.
-	\item Entities - classes representing data from the database. They allow for better type safety and simpler workflow, providing magic methods for accessing their data along with their typecasting.
-	\item Filters - files with logic that can be applied before or after visiting any of the application's routes.
+	\item Entities - classes representing data from the database. They allow for better
+	type safety and simpler workflow, providing magic methods for accessing their data
+	along with their typecasting.
+	\item Filters - files with logic that can be applied before or after visiting any of
+	the application's routes.
 	\item Libraries - shared logic.
 	\item Models - files that serve as models from MVC.
 	\item Validation - custom rules for verifying user inputs.
 	\item Views - this folder contains all of the HTML files.
 \end{itemize}
 
-The project's entry point is a file named index.php. It is located inside the public directory. The public directory also contains assets, CSS and JavaScript files, and the temp and uploaded folders. Temp is where all the uploaded files that were not yet assigned live. After being assigned, those files are moved to uploads. Uploads are categorized into folders by their material ids, each material having one such directory.
+The project's entry point is a file named index.php. It is located inside the public directory. The public
+directory also contains assets, CSS and JavaScript files, and the temp and uploaded folders. Temp is
+where all the uploaded files that were not yet assigned live. After being assigned, those files are
+moved to uploads. Uploads are categorized into folders by their material ids, each material having one
+such directory.
 
-The last directory worth mentioning is writable. Writable contains all of the logs, cache, and session files. More on the usage of the cache will be talked about later~\ref{sect:properties}.
+The last directory worth mentioning is writable. Writable contains all of the logs, cache, and session
+files. More on the usage of the cache will be talked about later~\cref{sect:properties}.
  
 \subsection{Setup and Updating}
 
 
-Before deploying CodeIgniter4, it is imperative to verify that the server can run PHP 7.4 or newer. The \textit{intl}, \textit{mbstring}, \textit{json} extensions must be enabled. The application uses the provided Image class to manipulate thumbnails, so a \textit{imagick} must be enabled too. The application must be configured using a \textit{.env} file in the framework's root directory or directly inside the \textit{App/Config} folder.
+Before deploying CodeIgniter4, it is imperative to verify that the server can run PHP 7.4 or newer. The
+\textit{intl}, \textit{mbstring}, \textit{json} extensions must be enabled. The application uses the
+provided Image class to manipulate thumbnails, so a \textit{imagick} must be enabled too. The
+application must be configured using a \textit{.env} file in the framework's root directory or directly
+inside the \textit{App/Config} folder.
 
-The first obstacle to the creation of the application came in the form of no way of configuring a new virtual host on the deployment machine. Virtual hosts are the preferred way of using CodeIgniter or any web-based application. To circumvent this, a new \textit{.htaccess} file was created. This file reroutes all traffic that does not lead to a file from the root folder to the public folder's index, the application's runner. The new file also prevents unwanted access to the root directory. Be wary that it will not work whenever URL rewriting is disabled.
+The first obstacle to the creation of the application came in the form of no way of configuring a new
+virtual host on the deployment machine. Virtual hosts are the preferred way of using CodeIgniter or
+any web-based application. To circumvent this, a new \textit{.htaccess} file was created. This file
+reroutes all traffic that does not lead to a file from the root folder to the public folder's index, the
+application's runner. The new file also prevents unwanted access to the root directory. Be wary that it
+will not work whenever URL rewriting is disabled.
 
-Running the application is as simple as renaming the applications' folder to be the same as the URL used for accessing it and modifying the env file with the desired database credentials and base applications URL. Before deploying the application, it is recommended to change the environment to production from development to hide debugging tools and error messages.
+Running the application is as simple as renaming the applications' folder to be the same as the URL
+used for accessing it and modifying the env file with the desired database credentials and base
+applications URL. Before deploying the application, it is recommended to change the environment to
+production from development to hide debugging tools and error messages.
 
-Sometimes it is desirable to update the framework to a newer version. Be warned that in doing so, incompatibilities may be introduced to the application. Updating can be done with either the composer or manually. In both cases, the changes to the \textit{App} must be done by following the patch notes. New versions of this directory are not applied automatically and must be merged by hand or with specialized merge tools.
+Sometimes it is desirable to update the framework to a newer version. Be warned that in doing so,
+incompatibilities may be introduced to the application. Updating can be done with either the
+composer or manually. In both cases, the changes to the \textit{App} must be done by following the
+patch notes. New versions of this directory are not applied automatically and must be merged by hand
+or with specialized merge tools.
 
 \section{Models}
 
-The very first step in the application's implementation is the creation of entities and their models. This is an easy process due to the knowledge from the ERD model~\ref{fig:erd}, mostly copying the structure but including the connectors directly in their intended entity.
+The very first step in the application's implementation is the creation of entities and their models. This
+is an easy process due to the knowledge from the ERD model~\imgref{erd}, mostly copying the
+structure but including the connectors directly in their intended entity.
 
-Several custom methods are included in the resource and material entities. Those methods streamline their use in the controllers and views. The resource entity's main methods are getDefaultImage(), getURL(), and getRootPath(). The default image method retrieves the path to the default image from the database as a new entity. The other two methods work on the property's saved data, transforming them into the desired outcome with the URL being a valid web reference and the root path a relative path of the resource from the projects' root directory. The material entity then provides getter methods for its resources. Those resources are saved in a shared array, and the methods retrieve only the specified type.
+Several custom methods are included in the resource and material entities. Those methods streamline
+their use in the controllers and views. The resource entity's main methods are getDefaultImage(),
+getURL(), and getRootPath(). The default image method retrieves the path to the default image from
+the database as a new entity. The other two methods work on the property's saved data, transforming
+them into the desired outcome with the URL being a valid web reference and the root path a relative
+path of the resource from the projects' root directory. The material entity then provides getter
+methods for its resources. Those resources are saved in a shared array, and the methods retrieve only
+the specified type.
 
-Codeigniter provides a base model that can be extended to simplify the usage of the database. Each extension must specify the targeted table's name, its primary key, and the fields it can modify. Not all fields must be present, which disables their modification by the model. There is one model for each of the databases' tables.
+Codeigniter provides a base model that can be extended to simplify the usage of the database. Each
+extension must specify the targeted table's name, its primary key, and the fields it can modify. Not all
+fields must be present, which disables their modification by the model. There is one model for each of
+the databases' tables.
 
 \section{Controllers and routing}
 
-Next came the creation of controllers. Each entity has its controller. Controllers are separated into two namespaces, public and administration. This is merely an organizational separation. Nonetheless, it is used to better discern their responsibilities when routing. Every public method has a route associated with it. The routes can either point to a viewable page or be an AJAX endpoint. All routes beginning with \textit{/admin/} are protected by an authentication filter~\ref{sect:authentication}.
+Next came the creation of controllers. Each entity has its controller. Controllers are separated into two
+namespaces, public and administration. This is merely an organizational separation. Nonetheless, it is
+used to better discern their responsibilities when routing. Every public method has a route associated
+with it. The routes can either point to a viewable page or be an AJAX endpoint. All routes beginning
+with \textit{/admin/} are protected by an authentication filter~\cref{sect:authentication}.
 
-The AJAX endpoints are targeted for use by the clients' javascript. It should be noted that the application supports Cross-site Request Forgery (CSRF) protection. CSRF is an attack that forces authenticated users to submit unwanted actions. Every submitted request must come with a CSRF token to be protected against this attack. The server verifies the token, and the request is approved if valid. Every submission changes the current token. Tokens can be saved as a unique input field in every form and loaded with the view. This is fine for standard forms, but when using AJAX, each submission invalidates the current token but does not replace it with a new one. This makes default AJAX unusable. All AJAX routes are grouped under the \textit{/ajax/} route to prevent this behavior. The route segment causes the application to append the current CSRF token to the AJAX response, allowing the replacement of all tokens currently present on the page.
+The AJAX endpoints are targeted for use by the clients' javascript. It should be noted that the
+application supports Cross-site Request Forgery (CSRF) protection. CSRF is an attack that forces
+authenticated users to submit unwanted actions. Every submitted request must come with a CSRF
+token to be protected against this attack. The server verifies the token, and the request is approved if
+valid. Every submission changes the current token. Tokens can be saved as a unique input field in every
+form and loaded with the view. This is fine for standard forms, but when using AJAX, each submission
+invalidates the current token but does not replace it with a new one. This makes default AJAX
+unusable. All AJAX routes are grouped under the \textit{/ajax/} route to prevent this behavior. The
+route segment causes the application to append the current CSRF token to the AJAX response,
+allowing the replacement of all tokens currently present on the page.
 
-Each controller provides an index method. The index, in most cases, presents the user with a view containing all accessible data of the related entity.
+Each controller provides an index method. The index, in most cases, presents the user with a view
+containing all accessible data of the related entity.
 
 \section{Views}
 
-The views component is the last part of the application, developed alongside the controllers. Views contain all of the applications' HTML code and some of the JavaScript. The HTML is saved in \text{.php} files and interlaced with PHP code. The framework then executes the embedded code before handing the result to the user. Due to that, it is possible to work with the entities directly inside the HTML. This is both more type-safe and pleasant than passing only basic data types, like strings and integers, across the views.
+The views component is the last part of the application, developed alongside the controllers. Views
+contain all of the applications' HTML code and some of the JavaScript. The HTML is saved in
+\text{.php} files and interlaced with PHP code. The framework then executes the embedded code
+before handing the result to the user. Due to that, it is possible to work with the entities directly
+inside the HTML. This is both more type-safe and pleasant than passing only basic data types, like
+strings and integers, across the views.
 
-The views follow the same division into the public and protected sections as seen in controllers. They are further separated by their entities. Again, this is purely organizational. Most of the views were created as includable components; the rest are either layout or extend some layout.
+The views follow the same division into the public and protected sections as seen in controllers. They
+are further separated by their entities. Again, this is purely organizational. Most of the views were
+created as includable components; the rest are either layout or extend some layout.
 
 \section{Properties as filters}
 \label{sect:properties}
 
-From the very start the properties were concieved as filters. To allow their easy handling inside the views, it is necessary to transform them from an array into a tree. This can be achieved by taking those properties whose tag is 0. For each such property, we find all of their children. Children are properties whose tag equals the current id. This process can be repeated until no such properties exist, meaning we arrived at a leaf.
+From the very start the properties were concieved as filters. To allow their easy handling inside the
+views, it is necessary to transform them from an array into a tree. This can be achieved by taking those
+properties whose tag is 0. For each such property, we find all of their children. Children are properties
+whose tag equals the current id. This process can be repeated until no such properties exist, meaning
+we arrived at a leaf.
 
 \begin{figure}[!htbp]
 	\begin{center}
@@ -640,7 +971,14 @@ From the very start the properties were concieved as filters. To allow their eas
 	\label{fig:property-tree}
 \end{figure}
 
-The whole process requires an large amount of queries. To reduce the strain on the database, we can cache the properties and the resulting tree. Cache can be checked before each query asking for a single material. To ask for the tree, a separate cache call is made when getting the tree itself. There are, however, complications associated with caching, mainly if the cache is saved for longer periods of time. The cache has priority over the database, meaning that changes will not be projected until the cache is either revalidated or it expires. Every update insert, update and delete call must be accompanied with a cache revalidation. It is not necessary to clear the whole cache. Only the changed property and its chain of parents along with the tree file need to be cleared.
+The whole process requires an large amount of queries. To reduce the strain on the database, we can
+cache the properties and the resulting tree. Cache can be checked before each query asking for a
+single material. To ask for the tree, a separate cache call is made when getting the tree itself. There
+are, however, complications associated with caching, mainly if the cache is saved for longer periods of
+time. The cache has priority over the database, meaning that changes will not be projected until the
+cache is either revalidated or it expires. Every update insert, update and delete call must be
+accompanied with a cache revalidation. It is not necessary to clear the whole cache. Only the changed
+property and its chain of parents along with the tree file need to be cleared.
 
 \begin{figure}[!htbp]
 	\begin{center}
@@ -655,11 +993,21 @@ The whole process requires an large amount of queries. To reduce the strain on t
 	\label{fig:property-cache}
 \end{figure}
 
-To fulfill the request to include a possibility of adding mouseover descriptions to the properties, a native HTML tooltips solution was used. It works by adding a \textit{title} attribute to any element, which properties can use to display their description.
+To fulfill the request to include a possibility of adding mouseover descriptions to the properties, a
+native HTML tooltips solution was used. It works by adding a \textit{title} attribute to any element,
+which properties can use to display their description.
+
+\newpage
 
 \section{Filtering materials}
 
-With property tree is available, it is very easy to recurse over its contents and steadily build a filter caret. The filtering caret is prepared with ease of use in mind~\ref{fig:filters}. Each property can be checked. If the property is a category, this action collapses its subtree and internally selects all of the values as a valid value for matching. In other words it groups the properties in a \textit{where in} part of the query. Properties that are not under a selected tree must all be matched. Aside from selecting the property, its subtree can be collapsed manually. This functionality is added to reduce the verticality of the filters.
+With property tree is available, it is very easy to recurse over its contents and steadily build a filter
+caret. The filtering module is prepared with ease of use in mind~\imgref{filters}. Each property can be
+checked. If the property is a category, this action collapses its subtree and internally selects all of the
+values as a valid value for matching. In other words it groups the properties in a \textit{where in} part
+of the query. Properties that are not under a selected tree must all be matched. Aside from selecting
+the property, its subtree can be collapsed manually. This functionality is added to reduce the
+verticality of the filters.
 
 \begin{figure}[!htbp]
 	\begin{center}
@@ -674,12 +1022,22 @@ With property tree is available, it is very easy to recurse over its contents an
 	\label{fig:material-filter}
 \end{figure}
 
-In addition to using properties, the materials can be filtered by their titles. The search is case-insensitive, but not accent-insensitive. To improve upon it this, an accent-insensitive suggestion system was added. The system uses a list of all available materials that is loaded with page. Search suggestions are often done by fetching the results directly from the server. However it was observed that such implementation seems unresponsive on the deployment server, sometimes taking seconds to display any results, which is why this alternative was chosen. If it proves a problem in the future, it can be changed fairly easily by replacing result fetching function with a server query.
+In addition to using properties, the materials can be filtered by their titles. The search is case
+insensitive, but not accent-insensitive. To improve upon it this, an accent-insensitive suggestion system
+was added. The system uses a list of all available materials that is loaded with page. Search
+suggestions are often done by fetching the results directly from the server. However it was observed
+that such implementation seems unresponsive on the deployment server, sometimes taking seconds
+to display any results, which is why this alternative was chosen. If it proves a problem in the future, it
+can be changed fairly easily by replacing result fetching function with a server query.
 
 \section{Authentication}
 \label{sect:authentication}
 
-The administration is protected by a password based authentication. This authentication uses CodeIgniters' sessions and filters to keep users logged in. All of the protected routes begin with \textit{/admin}. When visiting such a route, a filter is applied to verify if the user is logged in by consulting the currently active session. This means no authentication is required until the user logged out or the session was invalidated. 
+The administration is protected by a password based authentication. This authentication uses
+CodeIgniters' sessions and filters to keep users logged in. All of the protected routes begin with
+\textit{/admin}. When visiting such a route, a filter is applied to verify if the user is logged in by
+consulting the currently active session. This means no authentication is required until the user logged
+out or the session was invalidated. 
 
 \begin{figure}[!htbp]
 	\begin{center}
@@ -691,7 +1049,9 @@ The administration is protected by a password based authentication. This authent
 	\label{fig:auth-guard}
 \end{figure}
 
-To prevent users from returning to login page when they are already logged in, another filter is applied. This filter automatically redirects them to the landing page of the administration section upon encountering a logged in user.
+To prevent users from returning to login page when they are already logged in, another filter is
+applied. This filter automatically redirects them to the landing page of the administration section
+upon encountering a logged in user.
 
 \begin{figure}[!htbp]
 	\begin{center}
@@ -706,7 +1066,11 @@ To prevent users from returning to login page when they are already logged in, a
 	\label{fig:auth-views}
 \end{figure}
 
-The login process starts with the validation of the inputted email and password. The email is first used to find a single user. If found then tries to verify the saved hashed password with the inputted one. If the user is not found or the password not matched, returns to the login page and displays a message for the failed step. If the validation was successfull, saves the user inside the session and marks him as logged in, continuing to administration. When logging out, the saved session data are destroyed.
+The login process starts with the validation of the inputted email and password. The email is first used
+to find a single user. If found then tries to verify the saved hashed password with the inputted one. If
+the user is not found or the password not matched, returns to the login page and displays a message
+for the failed step. If the validation was successfull, saves the user inside the session and marks him as
+logged in, continuing to administration. When logging out, the saved session data are destroyed.
 
 \begin{figure}[!htbp]
 	\begin{center}
@@ -718,24 +1082,47 @@ The login process starts with the validation of the inputted email and password.
 	\label{fig:auth-process}
 \end{figure}
 
-The application allows users to reset their password. The process consists of sending the token to the entered email, redirecting user to the reset password page and waiting for user to enter the token and new password. The token is checked with the token saved into the session, and if valid, sets the password to the new one.
+The application allows users to reset their password. The process consists of sending the token to the
+entered email, redirecting user to the reset password page and waiting for user to enter the token and
+new password. The token is checked with the token saved into the session, and if valid, sets the
+password to the new one.
 
 \section{Statistics}
 
-The application saves usage statistics for each material. Upon visiting a material by a non-logged in user, the materials views are incremented and control passed to the Views model. The model then verifies if the material was visited in current server time day. If it was, then increments the count. If not, then inserts a new record with count set to one. This enables the application to keep track of daily views.
+The application saves usage statistics for each material. Upon visiting a material by a non-logged in
+user, the materials views are incremented and control passed to the Views model. The model then
+verifies if the material was visited in current server time day. If it was, then increments the count. If
+not, then inserts a new record with count set to one. This enables the application to keep track of daily
+views.
 
-Another useful statistic is served by the Ratings model. Each user can have up to one rating for each material. The model can be used to retrieve the recent most favorite materials by grouping the ratings by update date and id of the material.
+Another useful statistic is served by the Ratings model. Each user can have up to one rating for each
+material. The model can be used to retrieve the recent most favorite materials by grouping the ratings
+by update date and id of the material.
 
-The administration uses those statistics on the dashboard page. Dashboard is used to render daily and total visits or most viewed materials, both recent and all-time. The statistics include the blame counter, keeping track of all last updates on materials, and their relevant users. The dashboard also provides shortcuts to the last updated and last published materials.
+The administration uses those statistics on the dashboard page. Dashboard is used to render daily and
+total visits or most viewed materials, both recent and all-time. The statistics include the blame
+counter, keeping track of all last updates on materials, and their relevant users. The dashboard also
+provides shortcuts to the last updated and last published materials.
 
 \section{Creating or updating data}
 \label{sect:data-management}
 
-The administration was designed to be as resuable as possible. To that end, all of the manageable data use the same tabular layout. This layout is a redesign of the public one for viewing all materials. To allow easier management, each of the displayed entities can be created, edited or deleted directly in the view. The only exception to the creation and updating is the material entity, more elaborated upon in its own section~\ref{sect:material-editor}.
+The administration was designed to be as resuable as possible. To that end, all of the manageable data
+use the same tabular layout. This layout is a redesign of the public one for viewing all materials. To
+allow easier management, each of the displayed entities can be created, edited or deleted directly in
+the view. The only exception to the creation and updating is the material entity, more elaborated upon
+in its own section~\cref{sect:material-editor}.
 
-For other entities, the creation and updating is done by way of modals. The modal is an HTML element that is displayed over the current content. Each has a title specifying the current action and a content that represents that action. This approach allows easy integration into other views.
+For other entities, the creation and updating is done by way of modals. The modal is an HTML element
+that is displayed over the current content. Each has a title specifying the current action and a content
+that represents that action. This approach allows easy integration into other views.
 
-The application's modals all use the same JavaScript code contained in the \textit{modal.js} file. Every modal is opened by using the modalOpen~\ref{fig:modal-open} function. The function transforms the modal template from string to a HTMLElement. If the string contains scripts, it is necessary to reapply them, since the conversion marks them as disabled and does not run them. The funtion also fetches the data and fills the template if requested. The filling is done to allow the use of the function for both creation and editing.
+The application's modals all use the same JavaScript code contained in the \textit{modal.js} file. Every
+modal is opened by using the modalOpen~\imgref{modal-open} function. The function transforms the
+modal template from string to a HTMLElement. If the string contains scripts, it is necessary to reapply
+them, since the conversion marks them as disabled and does not run them. The funtion also fetches
+the data and fills the template if requested. The filling is done to allow the use of the function for
+both creation and editing.
 
 \begin{figure}
 	\begin{center}
@@ -747,9 +1134,17 @@ The application's modals all use the same JavaScript code contained in the \text
 	\label{fig:modal-open}
 \end{figure}
 
-Submission of the modal is handled by modalSubmit, a function that is an abstraction of sending the form data as a asynchronous request to the servers' controllers. The controllers then receives the request, verifies its contents and processes it. Then it sends either an error or the result of the operation back to the client. In case of failure the error message is displayed in the modal, otherwise the modal is closed and the view updated with the response.
+Submission of the modal is handled by modalSubmit, a function that is an abstraction of sending the
+form data as a asynchronous request to the servers' controllers. The controllers then receives the
+request, verifies its contents and processes it. Then it sends either an error or the result of the
+operation back to the client. In case of failure the error message is displayed in the modal, otherwise
+the modal is closed and the view updated with the response.
 
-Every administrator is allowed to modify, create, and delete other users~\ref{fig:modal-user}. An administrator cannot delete his own account. To prevent the unwanted modification of password while editing an account, a checkbox is added. This checkbox enables password format verification and adds the password to the database call. The password inputs are always present in case of new account.
+Every administrator is allowed to modify, create, and delete other users~\imgref{modal-user}. An
+administrator cannot delete his own account. To prevent the unwanted modification of password
+while editing an account, a checkbox is added. This checkbox enables password format verification and
+adds the password to the database call. The password inputs are always present in case of new
+account.
 
 \begin{figure}[!htbp]
 	\begin{center}
@@ -764,7 +1159,10 @@ Every administrator is allowed to modify, create, and delete other users~\ref{fi
 	\label{fig:modal-user}
 \end{figure}
 
-A property can belong to a category. To achiveve a user friendly management, a list of categories is loaded when opening the property editor~\ref{fig:modal-tag}. The category input field can then either be empty or one of the listed categories, which is verified on each change of the field. The form also supports the addition of description or priority.
+A property can belong to a category. To achiveve a user friendly management, a list of categories is
+loaded when opening the property editor~\imgref{modal-tag}. The category input field can then
+either be empty or one of the listed categories, which is verified on each change of the field. The form
+also supports the addition of description or priority.
 
 \begin{figure}[!htbp]
 	\begin{center}
@@ -779,9 +1177,18 @@ A property can belong to a category. To achiveve a user friendly management, a l
 \section{Creating or updating material}
 \label{sect:material-editor}
 
-Material management is the most important feature of the application, but also the most complex. As such, it does not use a modal as its front-end view, it is a separate page. This page contains editable title, status, properties, content, thumbnail and files, links, and relations. It uses a third-party text editor~\cite{tinymce} for the editing of content. The relations can be added by selecting an existing material from a loaded list of materials. Relations are implemented bi-directionally. Adding a relation will display it in both materials, and removing it will remove it from both, too.
+Material management is the most important feature of the application, but also the most complex. As
+such, it does not use a modal as its front-end view, it is a separate page. This page contains editable
+title, status, properties, content, thumbnail and files, links, and relations. It uses a third-party text
+editor~\cite{tinymce} for the editing of content. The relations can be added by selecting an existing
+material from a loaded list of materials. Relations are implemented bi-directionally. Adding a relation
+will display it in both materials, and removing it will remove it from both, too.
 
-Properties can be assigned to the material using a property selector~\ref{fig:tag-selector}. Property selector by default shows all currently assigned properties, but it can be unlocked to allow modifications. When the user unlocks it, the selector shows all properties of a single category, which can be toggled on and off. It shows a single category to prevent information overload, other categories are hidden. To change to a different category, a previous and next controls are added.
+Properties can be assigned to the material using a property selector~\imgref{tag-selector}. Property
+selector by default shows all currently assigned properties, but it can be unlocked to allow
+modifications. When the user unlocks it, the selector shows all properties of a single category, which
+can be toggled on and off. It shows a single category to prevent information overload, other
+categories are hidden. To change to a different category, a previous and next controls are added.
 
 \begin{figure}[!htbp]
 	\begin{center}
@@ -793,7 +1200,16 @@ Properties can be assigned to the material using a property selector~\ref{fig:ta
 	\label{fig:tag-selector}
 \end{figure}
 
-The editor is controlled by a specialized controller. This controller handles the verification of inputs, their transformation from post data into material entity and the follow up saving. The saving is an extensive operation. The first step is the saving of material into the database. This is enclosed in a transaction, and rollbacked should any part fail. During the transaction, the materials properties and relations are saved too. After the transaction is complete, the newly unused resources, given by a special post array, are unassigned. All operations are done by a specialized library that handles all resource specific operations. In case of the resource being a file or thumbnail the unassignement is different for temporary and assigned resources. The temporary ones are deleted completely, while the assigned ones are removed from database and moved into a separate folder. In case of failure an error message is returned and added to the editor view.
+The editor is controlled by a specialized controller. This controller handles the verification of inputs,
+their transformation from post data into material entity and the follow up saving. The saving is an
+extensive operation. The first step is the saving of material into the database. This is enclosed in a
+transaction, and rollbacked should any part fail. During the transaction, the materials properties and
+relations are saved too. After the transaction is complete, the newly unused resources, given by a
+special post array, are unassigned. All operations are done by a specialized library that handles all
+resource specific operations. In case of the resource being a file or thumbnail the unassignement is
+different for temporary and assigned resources. The temporary ones are deleted completely, while
+the assigned ones are removed from database and moved into a separate folder. In case of failure an
+error message is returned and added to the editor view.
 
 \begin{figure}[!htbp]
 	\begin{center}
@@ -811,15 +1227,27 @@ The editor is controlled by a specialized controller. This controller handles th
 			\includegraphics[width=\textwidth]{code/material-save-db.png}
 		\end{minipage}
 	\end{center}
-	\caption{Function for saving material from model}
+	\caption{Transaction for saving material}
 	\label{fig:material-save-db}
 \end{figure}
 
-From the previous description, it can be seen that the material saving does not handle the uploading of files, but operates only on already uploaded ones. Files, including thumbnails, are uploaded directly on the material editor page by using asynchronous JavaScript. The uploads happen everytime a user opens the file selector and submits it, after which the file is passed to the controller, verified and the library stores it in the temporary directory. The client then receives the response in form of a new resource. The resource is then added to the page, either replacing thumbnail or appended to the list of attached files.
+From the previous description, it can be seen that the material saving does not handle the uploading
+of files, but operates only on already uploaded ones. Files, including thumbnails, are uploaded directly
+on the material editor page by using asynchronous JavaScript. The uploads happen everytime a user
+opens the file selector and submits it, after which the file is passed to the controller, verified and the
+library stores it in the temporary directory. The client then receives the response in form of a new
+resource. The resource is then added to the page, either replacing thumbnail or appended to the list
+of attached files.
 
 \section{Deletion of data}
 
-The deletion interface is shared between all entities. Each deletable element contains a deletion button. The button shows a confirmation modal upon interaction~\ref{fig:delete-modal}. This modal is shared for all items in the view. Due to that the id of the item to be deleted is loaded into the modal after each such interaction. The deletion action can be set to the model during this time too, however in the application's case, it is always hardcoded into the view. Each entity has its own deletion method inside its own controller. Those endpoints usually call the delete method of the model, however there are two special cases.
+The deletion interface is shared between all entities. Each deletable element contains a deletion
+button. The button shows a confirmation modal upon interaction~\imgref{delete-modal}. This modal
+is shared for all items in the view. Due to that the id of the item to be deleted is loaded into the modal
+after each such interaction. The deletion action can be set to the model during this time too, however
+in the application's case, it is always hardcoded into the view. Each entity has its own deletion method
+inside its own controller. Those endpoints usually call the delete method of the model, however there
+are two special cases.
 
 \begin{figure}[!htbp]
 	\begin{center}
@@ -831,7 +1259,10 @@ The deletion interface is shared between all entities. Each deletable element co
 	\label{fig:delete-modal}
 \end{figure}
 
-First is the deletion of properties. There are two condition imposed. If the property is a category, meaning it has at least one subproperty, or if it is used in any material, it cannot be deleted and the user is notified with corresponding error message. The verification is done by way of overriding the property models default deletion method~\ref{fig:delete-tag}.
+First is the deletion of properties. There are two condition imposed. If the property is a category,
+meaning it has at least one subproperty, or if it is used in any material, it cannot be deleted and the
+user is notified with corresponding error message. The verification is done by way of overriding the
+property models default deletion method~\imgref{delete-tag}.
 
 \begin{figure}[!htbp]
 	\begin{center}
@@ -839,47 +1270,101 @@ First is the deletion of properties. There are two condition imposed. If the pro
 			\includegraphics[width=\textwidth]{code/delete-tag.png}
 		\end{minipage}
 	\end{center}
-	\caption{Deletion method override inside the property model}
+	\caption{Deletion process of properties}
 	\label{fig:delete-tag}
 \end{figure}
 
-Second is the deletion of materials. Each material is connected to a multitude of data, however the database uses foreign keys to service its deletion, handling all of the connections inside the database itself. Even with that being the case, there is a need to remove the attached files and thumbnail manually. This step is done before the removal of the material from the database.
+Second is the deletion of materials. Each material is connected to a multitude of data, however the
+database uses foreign keys to service its deletion, handling all of the connections inside the database
+itself. Even with that being the case, there is a need to remove the attached files and thumbnail
+manually. This step is done before the removal of the material from the database.
+
+\section{Testing}
+
+The application's testing was done manually. No unit or other tests were written.
+While it is usually preferred to automatize the testing, it was not prioritized as
+the creation of tests is a time-consuming process, and their task could be mostly
+covered by the follow-up user testing. Extensive user, both public and administration,
+ testing was done on both the pre-release and the release versions.
+
+A randomized bot user test was considered for a while but not used. It can be presumed
+that administrators will not act maliciously in the administration section. If the application
+breaks due to random user behavior in the public section, it will not cause any real
+issues, being recoverable by a simple refresh of the page.
 
 \chapter{Conclusion}
 
-The thesis aimed to analyze, design and reimplement an educational materials database WordPress plugin into a standalone web application explicitly tailored to the needs of ENAI.
+The thesis aimed to analyze, design and reimplement an educational materials database WordPress
+plugin into a standalone web application explicitly tailored to the needs of ENAI.
 
-The introduction first elaborated on the context of the project, helping readers get into the problem. The next part looked at the existence of premade systems that would be possible to use in place of the new implementation. However, they were either too focused on the management of complete courses, were general content management systems, or handled Wikipedias, none of which fulfilled the application's intended functionality.
+The introduction first elaborated on the context of the project, helping readers get into the problem.
+The next part looked at the existence of premade systems that would be possible to use in place of
+the new implementation. However, they were either too focused on the management of complete
+courses, were general content management systems, or handled Wikipedias, none of which fulfilled
+the application's intended functionality.
 
-With the knowledge from the introduction, an analysis of the plugin was made. The analysis focused on finding the exact functionality of the plugin, and its interface and data flow much more than on its code. This way of research produced formal requirements for the application, which were then visualized in a use case diagram and used in a data model. With both the use and data model known, an abstract UI layout was constructed for most of the necessary components. This design was then implemented.
+With the knowledge from the introduction, an analysis of the plugin was made. The analysis focused
+on finding the exact functionality of the plugin, and its interface and data flow much more than on its
+code. This way of research produced formal requirements for the application, which were then
+visualized in a use case diagram and used in a data model. With both the use and data model known,
+an abstract UI layout was constructed for most of the necessary components. This design was then
+implemented.
 
-The implementation uses a PHP framework~\cite{codeigniter4} as its back-end, greatly simplifying and speeding up the development process. The framework operates on an MVC design pattern, which significantly increases the maintainability and modularity of the application.
+The implementation uses a PHP framework~\cite{codeigniter4} as its back-end, greatly simplifying and
+speeding up the development process. The framework operates on an MVC design pattern, which
+significantly increases the maintainability and modularity of the application.
 
-The product of the work is a new web application that provides easy-to-use management of an educational database. While the application is thematically customized for ENAI, it is freely available for use and modifications~\cite{repository} under the MIT license.
+The product of the work is a new web application that provides easy-to-use management of an
+educational database. While the application is thematically customized for ENAI, it is freely available
+for use and modifications~\cite{repository} under the MIT license.
 
 \section{Contributions of the work}
 
-The work produced an open-source web application designed specifically for the presentation and management of educational materials. 
+The work produced an open-source web application designed specifically for the presentation and
+management of educational materials. 
 
-Its primary and intended contribution is its deployment to the ENAI web server, which will run until it once again becomes obsolete. This server is already quite known, and the new application may help it grow further.
+Its primary and intended contribution is its deployment to the ENAI web server, which will run until it
+once again becomes obsolete. This server is already quite known, and the new application may help it
+grow further.
 
-Systematic support of views and ratings should, in theory, help with improvements to the material's quality. The application also supports a virtually unlimited level of tag hierarchies, only limited by the complexity of the presentation to the user. This is a direct upgrade from the old implementation, which was impossible. This upgrade should allow easier management of tags by grouping them together and introduce an easier way of searching for whole categories. Another improvement is the quicker and easier management of files, reducing the complexity of several steps into one.
+Systematic support of views and ratings should, in theory, help with improvements to the material's
+quality. The application also supports a virtually unlimited level of tag hierarchies, only limited by the
+complexity of the presentation to the user. This is a direct upgrade from the old implementation,
+which was impossible. This upgrade should allow easier management of tags by grouping them
+together and introduce an easier way of searching for whole categories. Another improvement is the
+quicker and easier management of files, reducing the complexity of several steps into one.
 
-The application is deployable with minimal setup. It also offers a setup guide. It being open-source enables anyone to download it, possibly customize and then deploy it to their own server, all free of charge. The introduction spoke about a shortage of applications of this kind, which means that their number might increase when no entry costs are required.
+The application is deployable with minimal setup. It also offers a setup guide. It being open-source
+enables anyone to download it, possibly customize and then deploy it to their own server, all free of
+charge. The introduction spoke about a shortage of applications of this kind, which means that their
+number might increase when no entry costs are required.
 
 \section{Possible future improvements}
 
-The application meets the criteria stated at the start of the development. Nevertheless, there is always a possibility for improvements.
+The application meets the criteria stated at the start of the development. Nevertheless, there is
+always a possibility for improvements.
 
-For example, the support for multi-lingual materials is done by bi-directional relations, which could be massively improved by implementing material collections. Those collections could be the parents of each material with properties attached to them instead. Those collections could then share their tags with their materials, allowing for easier management.
+For example, the support for multi-lingual materials is done by bi-directional relations, which could be
+massively improved by implementing material collections. Those collections could be the parents of
+each material with properties attached to them instead. Those collections could then share their tags
+with their materials, allowing for easier management.
 
-Another possible improvement would be to add support for more languages on the level of the whole application. Some parts already, like validation, already support such a notion. However, only some do. If a translation were to be provided, minor changes would be required across the whole application, but a framework-supported localization could then be used.
+Another possible improvement would be to add support for more languages on the level of the whole
+application. Some parts already, like validation, already support such a notion. However, only some do.
+If a translation were to be provided, minor changes would be required across the whole application,
+but a framework-supported localization could then be used.
 
-As a last example, an algorithm for automatically finding similar relations could be implemented. This operation is currently done by hand and is mixed with language support.
+As a last example, an algorithm for automatically finding similar relations could be implemented. This
+operation is currently done by hand and is mixed with language support.
 
 \section{Evaluation}
 
-The application was created in a span of seven months with over five hundred commits recorded on git. The main bulk of the work came in the later part of development. While I do not have a precise measurement of the time spent on the project, it is at the very least three hundred hours. The costs would undoubtedly accumulate was the project a paid one. The project is my first web application, having learned all of the languages and principles during its development. The application has come out well in most aspects.
+The application was created in a span of seven months with over five hundred commits recorded on
+git. The main bulk of the work came in the later part of development. While I do not have a precise
+measurement of the time spent on the project, it is at the very least three hundred hours. The costs
+would undoubtedly accumulate was the project a paid one. The project is my first web application,
+having learned all of the languages and principles during its development. The application has come
+out well in most aspects.
 
 \printbibliography[heading=bibintoc] %% Print the bibliography.
 
@@ -888,8 +1373,12 @@ The application was created in a span of seven months with over five hundred com
 %     \addcontentsline{toc}{chapter}{\indexname} %% table of contents.
 %     \printindex
 
-% \appendix %% Start the appendices.
-% \chapter{Source Code}
-% SOURCE CODE WILL BE ADDED
+\appendix %% Start the appendices.
+\chapter{Source Code}
+
+Full source code of the application can be found in the attachments or in the GitHub repository:
+
+\url{https://github.com/Razzoved/educational-database-bp}.
+
 
 \end{document}
